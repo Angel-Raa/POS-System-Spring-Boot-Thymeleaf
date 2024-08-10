@@ -1,0 +1,20 @@
+services:
+  postgresql:
+    container_name: app-mvc-data
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.dl/schema.sql
+
+volumes:
+  postgresql:
+      driver: local
