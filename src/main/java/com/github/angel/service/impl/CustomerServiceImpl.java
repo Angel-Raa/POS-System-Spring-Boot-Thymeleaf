@@ -49,8 +49,8 @@ public class CustomerServiceImpl implements CustomerService {
     public void save(CustomerDTO customerDTO) {
         Customer customer = mapToCustomer(customerDTO);
         String email = customer.getEmail();
-        if(customerRepository.existsByEmail(email)){
-            throw new EmailAlreadyExistsException("There is already a client with this email." + email );
+        if (customerRepository.existsByEmail(email)) {
+            throw new EmailAlreadyExistsException("There is already a client with this email." + email);
         }
         customerRepository.save(customer);
 
@@ -61,14 +61,15 @@ public class CustomerServiceImpl implements CustomerService {
     public void update(Long theId, CustomerDTO customerDTO) {
         Customer customer = customerRepository.findById(theId)
                 .orElseThrow(() -> new ResourceNotFoundException("Clients not found with that ID " + theId));
-        customer.setFirstName(customerDTO.firstName());
-        customer.setLastName(customerDTO.lastName());
-        customer.setEmail(customerDTO.email());
-        customer.setTel(customerDTO.tel());
-        customer.setAddress(customerDTO.address());
+        customer.setFirstName(customerDTO.getFirstName());
+        customer.setLastName(customerDTO.getLastName());
+        customer.setEmail(customerDTO.getEmail());
+        customer.setTel(customerDTO.getTel());
+        customer.setAddress(customerDTO.getAddress());
         customerRepository.save(customer);
 
     }
+
     @Transactional
     @Override
     public void delete(Long theId) {
@@ -76,6 +77,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .orElseThrow(() -> new ResourceNotFoundException("Clients not found with that ID " + theId));
         customerRepository.delete(customer);
     }
+
     @Transactional(readOnly = true)
     @Override
     public List<CustomerDTO> searchByName(String theName) {
@@ -91,7 +93,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO findByEmail(String email) {
-        return mapToCustomerDTO(customerRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("A client with that email has not been found" + email)));
+        return mapToCustomerDTO(customerRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException("A client with that email has not been found" + email)));
     }
 
     @Transactional(readOnly = true)
@@ -103,11 +106,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     private static @NotNull Customer mapToCustomer(@NotNull CustomerDTO customerDTO) {
         Customer customer = new Customer();
-        customer.setAddress(customerDTO.address());
-        customer.setEmail(customerDTO.email());
-        customer.setFirstName(customerDTO.firstName());
-        customer.setLastName(customerDTO.lastName());
-        customer.setTel(customerDTO.tel());
+        customer.setAddress(customerDTO.getAddress());
+        customer.setEmail(customerDTO.getEmail());
+        customer.setFirstName(customerDTO.getFirstName());
+        customer.setLastName(customerDTO.getLastName());
+        customer.setTel(customerDTO.getTel());
         return customer;
     }
 

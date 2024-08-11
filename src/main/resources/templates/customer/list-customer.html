@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
+
+  <title>POs</title>
+
+</head>
+
+<body>
+  <div class="container mt-5">
+    <h2 class="mb-4">Customer List</h2>
+
+    <!-- Mostrar el mensaje de éxito si está presente -->
+    <div th:if="${message != null}" class="alert alert-success">
+        <span th:text="${message}"></span>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Customer List
+        </div>
+        <div class="card-body">
+            <!-- Table start -->
+            <table class="table table-striped" id="datatablesSimple">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="customer : ${customers}">
+                        <td th:text="${customer.firstName}"></td>
+                        <td th:text="${customer.lastName}"></td>
+                        <td th:text="${customer.tel}"></td>
+                        <td th:text="${customer.email}"></td>
+                        <td th:text="${customer.address}"></td>
+                        <td>
+                            <!-- Action buttons (edit/delete) -->
+                            <a th:href="@{/customer/edit/{id}(id=${customer.customerId})}" class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+                            <a th:href="@{/customer/delete/{id}(id=${customer.customerId})}" class="btn btn-danger btn-sm"
+                               onclick="return confirm('Are you sure you want to delete this customer?');">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script>
+<!-- Optional: Include FontAwesome for icons -->
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js}"></script>
+
+</body>
+
+</html>

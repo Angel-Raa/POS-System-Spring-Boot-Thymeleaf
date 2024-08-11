@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
+    <title>POs</title>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Add Customer</h2>
+        <form method="post" th:action="@{/customer}" th:object="${customer}">
+            <div class="mb-3">
+                <label for="firstname" class="form-label">First Name</label>
+                <input th:field="*{firstName}" type="text" class="form-control" id="firstname"
+                    th:classappend="${errors != null && errors.containsKey('firstName')} ? 'is-invalid'"
+                    placeholder="Enter first name">
+                <div class="invalid-feedback" th:if="${errors != null && errors.containsKey('firstName')}"
+                    th:text="${errors['firstName']}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="lastname" class="form-label">Last Name</label>
+                <input th:field="*{lastName}" type="text" class="form-control" id="lastname"
+                    th:classappend="${errors != null && errors.containsKey('lastName')} ? 'is-invalid'"
+                    placeholder="Enter last name">
+                <div class="invalid-feedback" th:if="${errors != null && errors.containsKey('lastName')}"
+                    th:text="${errors['lastName']}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="tel" class="form-label">Phone Number</label>
+                <input th:field="*{tel}" type="tel" class="form-control" id="tel"
+                    th:classappend="${errors != null && errors.containsKey('tel')} ? 'is-invalid'"
+                    placeholder="Enter phone number">
+                <div class="invalid-feedback" th:if="${errors != null && errors.containsKey('tel')}"
+                    th:text="${errors['tel']}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input th:field="*{email}" type="email" class="form-control" id="email"
+                    th:classappend="${errors != null && errors.containsKey('email')} ? 'is-invalid'"
+                    placeholder="Enter email">
+                <div class="invalid-feedback" th:if="${errors != null && errors.containsKey('email')}"
+                    th:text="${errors['email']}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <input th:field="*{address}" type="text" class="form-control" id="address"
+                    th:classappend="${errors != null && errors.containsKey('address')} ? 'is-invalid'"
+                    placeholder="Enter address">
+                <div class="invalid-feedback" th:if="${errors != null && errors.containsKey('address')}"
+                    th:text="${errors['address']}"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Customer</button>
+        </form>
+    </div>
+
+    <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script>
+
+</body>
+
+</html>
