@@ -2,9 +2,14 @@ package com.github.angel.service.impl;
 
 import com.github.angel.dto.CategoryDTO;
 import com.github.angel.dto.ProductDTO;
+import com.github.angel.entity.Category;
+import com.github.angel.exception.ResourceNotFoundException;
 import com.github.angel.repository.CategoryRepository;
 import com.github.angel.service.CategoryService;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,25 +20,29 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
-
+    @Transactional
     @Override
-    public CategoryDTO createCategory(CategoryDTO categoryDTO) {
-        return null;
+    public void createCategory(CategoryDTO categoryDTO) {
+        Category category = matToCategory(categoryDTO);
+        categoryRepository.save(category);
     }
-
+    @Transactional
     @Override
-    public CategoryDTO updateCategory(Long id, CategoryDTO dto) {
-        return null;
-    }
+    public void updateCategory(Long id, CategoryDTO dto) {
 
+
+    }
+    @Transactional(readOnly = true)
     @Override
     public List<CategoryDTO> getAllCategories() {
-        return List.of();
+        return categoryRepository.findAll().stream()
+                .map(CategoryServiceImpl::mapToCategoryDto)
+                .toList();
     }
-
+    @Transactional(readOnly = true)
     @Override
     public CategoryDTO getCategoryById(Long id) {
-        return null;
+        return mapToCategoryDto(categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No category found with that Id" + id)));
     }
 
     @Override
@@ -51,5 +60,23 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
+
+    @Contract("_ -> new")
+    private static @NotNull CategoryDTO mapToCategoryDto(@NotNull Category category){
+        return new CategoryDTO(
+                category.getCategoryId(),
+                category.getName(),
+                category.getDescription()
+        );
+    }
+
+    @Contract(pure = true)
+    private static @NotNull Category matToCategory(@NotNull CategoryDTO dto){
+        Category category =  new Category();
+        category.setName(dto.name());
+        category.setDescription(dto.description());
+        category.setCategoryId(dto.categoryId());
+        return category;
+    }
 
 }
