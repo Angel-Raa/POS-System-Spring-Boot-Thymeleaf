@@ -25,7 +25,6 @@ public class CustomerDTO {
         private String lastName;
 
         @NotBlank(message = "Telephone number is required")
-        @Pattern(regexp = "\\d{10}", message = "Telephone number must be 10 digits")
         private String tel;
 
         @NotBlank(message = "Email is required")
@@ -82,6 +81,30 @@ public class CustomerDTO {
         public String toString() {
                 return "CustomerDTO [customerId=" + customerId + ", firstName=" + firstName + ", lastName=" + lastName
                                 + ", tel=" + tel + ", email=" + email + ", address=" + address + "]";
+        }
+
+        public void setCustomerId(Long customerId) {
+                this.customerId = customerId;
+        }
+
+        public void setFirstName(String firstName) {
+                this.firstName = firstName;
+        }
+
+        public void setLastName(String lastName) {
+                this.lastName = lastName;
+        }
+
+        public void setTel(String tel) {
+                this.tel = tel;
+        }
+
+        public void setEmail(String email) {
+                this.email = email;
+        }
+
+        public void setAddress(String address) {
+                this.address = address;
         }
 
 }

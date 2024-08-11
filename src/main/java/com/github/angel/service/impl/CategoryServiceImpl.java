@@ -3,8 +3,10 @@ package com.github.angel.service.impl;
 import com.github.angel.dto.CategoryDTO;
 import com.github.angel.dto.ProductDTO;
 import com.github.angel.entity.Category;
+import com.github.angel.entity.Product;
 import com.github.angel.exception.ResourceNotFoundException;
 import com.github.angel.repository.CategoryRepository;
+import com.github.angel.repository.ProductRepository;
 import com.github.angel.service.CategoryService;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -16,9 +18,10 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
-
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+    private final ProductRepository productRepository;
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
+        this.productRepository = productRepository;
     }
     @Transactional
     @Override
@@ -29,6 +32,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public void updateCategory(Long id, CategoryDTO dto) {
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No category found with that Id" + id));
+        category.setName(dto.getName());
+        category.setDescription(dto.getDescription());
+        categoryRepository.save(category);
 
 
     }
@@ -44,19 +51,29 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO getCategoryById(Long id) {
         return mapToCategoryDto(categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No category found with that Id" + id)));
     }
-
+    @Transactional
     @Override
     public void deleteCategoryById(Long id) {
-        // TODO document why this method is empty
+      CategoryDTO categoryDTO = getCategoryById(id);
+      categoryRepository.deleteById(categoryDTO.getCategoryId());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ProductDTO> getProductsByCategory(Long categoryId) {
-        return List.of();
+        return categoryRepository.findByProductsByCategory(categoryId).stream()
+        .map(CategoryServiceImpl::mapToproductDTO)
+        .toList();
     }
 
+    @Transactional
     @Override
     public void moveProductToCategory(Long productId, Long newCategoryId) {
+        Product newProduct = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("No product found with that Id" + productId));
+        Category newCategory = categoryRepository.findById(newCategoryId).orElseThrow(() -> new ResourceNotFoundException("No category found with that Id" + newCategoryId));
+        newProduct.setCategoryId(newCategory);
+        productRepository.save(newProduct);
+
 
     }
 
@@ -73,10 +90,23 @@ public class CategoryServiceImpl implements CategoryService {
     @Contract(pure = true)
     private static @NotNull Category matToCategory(@NotNull CategoryDTO dto){
         Category category =  new Category();
-        category.setName(dto.name());
-        category.setDescription(dto.description());
-        category.setCategoryId(dto.categoryId());
+        category.setName(dto.getName());
+        category.setDescription(dto.getDescription());
+        category.setCategoryId(dto.getCategoryId());
         return category;
+    }
+
+    @Contract(pure = true)
+    private static @NotNull ProductDTO mapToproductDTO(Product product){
+        return new ProductDTO(
+            product.getId(),
+            product.getName(),
+            product.getPrice(),
+            product.getStock(),
+            product.getDescription(),
+            product.getCategoryId().getCategoryId()
+
+        );
     }
 
 }

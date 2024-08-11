@@ -19,7 +19,6 @@ import com.github.angel.service.CustomerService;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.validation.FieldError;
 import java.util.stream.Collectors;
@@ -63,7 +62,7 @@ public class CustomerController {
         customerService.save(customer);
         // Añade un mensaje de éxito y redirige a la lista de clientes
         attributes.addFlashAttribute("message", "Customer added successfully!");
-        return "redirect:/customer/list-customer"; 
+        return "redirect:/customer/list"; 
     }
 
     @GetMapping("/list")

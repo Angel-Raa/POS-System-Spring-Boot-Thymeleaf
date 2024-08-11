@@ -12,7 +12,6 @@ package com.github.angel.service;
 import java.util.List;
 
 import com.github.angel.dto.CustomerDTO;
-import com.github.angel.entity.Customer;
 
 public interface CustomerService {
     List<CustomerDTO> findAll();
@@ -30,6 +29,7 @@ public interface CustomerService {
     boolean existsByEmail(String email);
 
     CustomerDTO findByEmail(String email);
+
     List<CustomerDTO> findDistinctByLastnameAndFirstname(String firstName, String lastName);
 
 }
