@@ -34,23 +34,19 @@ public class Customer implements Serializable {
     @Size(max = 40, message = "First name must be at most 40 characters long")
     @Column(length = 40)
     private String firstName;
-
     @NotBlank(message = "Last name field cannot be empty")
     @Size(max = 40, message = "Last name must be at most 40 characters long")
     @Column(length = 40)
     private String lastName;
-
-    @NotBlank(message = "Tel field cannot be empty")
-    @Size(max = 12, message = "Tel must be at most 12 characters long")
-    @Column(length = 12)
-    private String tel;
-
     @NotBlank(message = "Email field cannot be empty")
     @Size(max = 40, message = "Email must be at most 40 characters long")
     @Email(message = "Invalid email format")
     @Column(length = 40, unique = true)
     private String email;
-
+    @NotBlank(message = "Tel field cannot be empty")
+    @Size(max = 12, message = "Tel must be at most 12 characters long")
+    @Column(length = 12)
+    private String tel;
     @NotBlank(message = "Address field cannot be empty")
     @Size(max = 80, message = "Address must be at most 80 characters long")
     @Column(length = 80)

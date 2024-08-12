@@ -19,7 +19,7 @@
             <li class="breadcrumb-item">
                 <a th:href="@{/}">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Customer List</li>
+            <li class="breadcrumb-item active">List of categories</li>
         </ol>
 
         <!-- Mostrar el mensaje de éxito si está presente -->
@@ -30,38 +30,33 @@
         <div class="card shadow-sm">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
-                Customer List
+                List of categories
             </div>
             <div class="card-body">
                 <!-- Table start -->
                 <table class="table table-striped" id="datatablesSimple">
                     <thead>
                         <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Address</th>
+                            <th>Name</th>
+                            <th>Description</th>
                             <th>Actions</th>
+
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="customer : ${customers}">
-                            <td th:text="${customer.firstName}"></td>
-                            <td th:text="${customer.lastName}"></td>
-                            <td th:text="${customer.tel}"></td>
-                            <td th:text="${customer.email}"></td>
-                            <td th:text="${customer.address}"></td>
+                        <tr th:each="category : ${categories}">
+                            <td th:text="${category.name}"></td>
+                            <td th:text="${category.description}"></td>
                             <td>
                                 <!-- Action buttons (edit/delete) -->
                                 <div class="btn-group" role="group">
-                                    <a th:href="@{/customer/edit/}+${customer.customerId}"
+                                    <a th:href="@{/category/edit/}+${category.categoryId}"
                                         class="btn btn-warning btn-sm">
                                         Edit
                                     </a>
-                                    <a th:href="@{/customer/delete/}+${customer.customerId}"
+                                    <a th:href="@{/category/delete/}+${category.categoryId}"
                                         class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Are you sure you want to delete this customer?');">
+                                        onclick="return confirm('Are you sure you want to delete this categoryId?');">
                                         Delete
                                     </a>
                                 </div>

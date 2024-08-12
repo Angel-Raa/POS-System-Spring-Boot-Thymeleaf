@@ -10,25 +10,25 @@
 
 <body class="sb-nav-fixed">
     <div th:replace="layout/header :: header"></div>
-   
+
     <div id="layoutSidenav">
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Add Customer</h1>
+                    <h1 class="mt-4">Edit Customer</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item">
                             <a th:href="@{/}">Dashboard</a>
                         </li>
-                        <li class="breadcrumb-item active">Add Customer</li>
+                        <li class="breadcrumb-item active">Edit Customer</li>
                     </ol>
 
                     <div class="card shadow-sm">
                         <div class="card-header">
-                            <h2 class="card-title">Add Customer</h2>
+                            <h2 class="card-title">Edit Customer</h2>
                         </div>
                         <div class="card-body">
-                            <form method="post" th:action="@{/customer}" th:object="${customer}">
+                            <form method="post" th:action="@{/customer/edit/}+${customer.customerId}" th:object="${customer}">
                                 <!-- First Name Field -->
                                 <div class="mb-3">
                                     <label for="firstname" class="form-label">First Name</label>
@@ -39,7 +39,7 @@
                                         th:if="${errors != null && errors.containsKey('firstName')}"
                                         th:text="${errors['firstName']}"></div>
                                 </div>
-
+                            
                                 <!-- Last Name Field -->
                                 <div class="mb-3">
                                     <label for="lastname" class="form-label">Last Name</label>
@@ -50,18 +50,8 @@
                                         th:if="${errors != null && errors.containsKey('lastName')}"
                                         th:text="${errors['lastName']}"></div>
                                 </div>
-
-                                <!-- Phone Number Field -->
-                                <div class="mb-3">
-                                    <label for="tel" class="form-label">Phone Number</label>
-                                    <input th:field="*{tel}" type="tel" class="form-control" id="tel"
-                                        th:classappend="${errors != null && errors.containsKey('tel')} ? 'is-invalid'"
-                                        placeholder="Enter phone number" />
-                                    <div class="invalid-feedback" th:if="${errors != null && errors.containsKey('tel')}"
-                                        th:text="${errors['tel']}"></div>
-                                </div>
-
-                                <!-- Email Field -->
+                            
+                                <!-- Email Field (Corrected) -->
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
                                     <input th:field="*{email}" type="email" class="form-control" id="email"
@@ -71,7 +61,17 @@
                                         th:if="${errors != null && errors.containsKey('email')}"
                                         th:text="${errors['email']}"></div>
                                 </div>
-
+                            
+                                <!-- Phone Number Field (Corrected) -->
+                                <div class="mb-3">
+                                    <label for="tel" class="form-label">Phone Number</label>
+                                    <input th:field="*{tel}" type="tel" class="form-control" id="tel"
+                                        th:classappend="${errors != null && errors.containsKey('tel')} ? 'is-invalid'"
+                                        placeholder="Enter phone number" />
+                                    <div class="invalid-feedback" th:if="${errors != null && errors.containsKey('tel')}"
+                                        th:text="${errors['tel']}"></div>
+                                </div>
+                            
                                 <!-- Address Field -->
                                 <div class="mb-3">
                                     <label for="address" class="form-label">Address</label>
@@ -82,10 +82,11 @@
                                         th:if="${errors != null && errors.containsKey('address')}"
                                         th:text="${errors['address']}"></div>
                                 </div>
-
+                            
                                 <!-- Submit Button -->
-                                <button type="submit" class="btn btn-primary">Add Customer</button>
+                                <button type="submit" class="btn btn-primary">Edit Customer</button>
                             </form>
+                            
                         </div>
                     </div>
                 </div>

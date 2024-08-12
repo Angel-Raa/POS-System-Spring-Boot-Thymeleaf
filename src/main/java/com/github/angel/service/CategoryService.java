@@ -11,7 +11,7 @@ public interface CategoryService {
     List<CategoryDTO>getAllCategories ();
     CategoryDTO getCategoryById(Long id);
     void deleteCategoryById(Long id);
-
+    boolean existsByName(String name);
     List<ProductDTO> getProductsByCategory(Long categoryId);
     void moveProductToCategory(Long productId, Long newCategoryId);
 

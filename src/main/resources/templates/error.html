@@ -1,11 +1,31 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Error page for POS system" />
+    <meta name="author" content="Angel Aguero" />
+    <title>Error</title>
+
+    <link th:href="@{https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css}" rel="stylesheet" />
+    <link th:href="@{css/styles.css}" rel="stylesheet" />
 </head>
+
 <body>
-    
+    <div class="container mt-5">
+        <h1 class="text-danger">An Error Occurred</h1>
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Validation Errors</h4>
+            <ul>
+                <li th:each="entry : ${errors}">
+                    <strong th:text="${entry.key}">Field</strong>: <span th:text="${entry.value}">Error message</span>
+                </li>
+            </ul>
+        </div>
+        <a href="#" onclick="history.back(); return false;" class="btn btn-primary mt-3">Go Back</a>
+    </div>
 </body>
+
 </html>

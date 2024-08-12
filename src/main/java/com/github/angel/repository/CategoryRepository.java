@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    @Query("SELECT p FROM Product p WHERE p.categoryId.id = :categoryId ")
+    @Query("SELECT p FROM Product p WHERE p.category.id = :categoryId ")
     List<Product> findByProductsByCategory(@Param("categoryId") Long categoryId);
+    
+    boolean existsByName(String name);
 }

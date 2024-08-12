@@ -9,10 +9,10 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "categories")
+@Table(name = "categories", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 public class Category implements Serializable {
     @Serial
-    private static long serialVersionUID = 182715381639163161l;
+    private static long serialVersionUID = 182715381639163161L;
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
     @NotBlank(message = "Category name is required")
@@ -22,7 +22,7 @@ public class Category implements Serializable {
     @Size(max = 150, message = "Description must not exceed 150 characters")
     @Column(length = 150)
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity =  Product.class, mappedBy = "categoryId", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity =  Product.class, mappedBy = "category", orphanRemoval = true)
     private List<Product> products;
 
     public Category() {
@@ -35,13 +35,6 @@ public class Category implements Serializable {
         this.products = products;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    public static void setSerialVersionUID(long serialVersionUID) {
-        Category.serialVersionUID = serialVersionUID;
-    }
 
     public Long getCategoryId() {
         return categoryId;

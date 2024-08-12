@@ -19,18 +19,15 @@ public class CustomerDTO {
         @NotBlank(message = "First name is required")
         @Size(max = 40, message = "First name must not exceed 40 characters")
         private String firstName;
-
         @NotBlank(message = "Last name is required")
         @Size(max = 40, message = "Last name must not exceed 40 characters")
         private String lastName;
-
-        @NotBlank(message = "Telephone number is required")
-        private String tel;
-
         @NotBlank(message = "Email is required")
         @Email(message = "Invalid email format")
         @Size(max = 40, message = "Email must not exceed 40 characters")
         private String email;
+        @NotBlank(message = "Telephone number is required")
+        private String tel;
 
         @NotBlank(message = "Address is required")
         @Size(max = 80, message = "Address must not exceed 80 characters")
@@ -77,10 +74,11 @@ public class CustomerDTO {
                 return address;
         }
 
+      
         @Override
         public String toString() {
                 return "CustomerDTO [customerId=" + customerId + ", firstName=" + firstName + ", lastName=" + lastName
-                                + ", tel=" + tel + ", email=" + email + ", address=" + address + "]";
+                                + ", email=" + email + ", tel=" + tel + ", address=" + address + "]";
         }
 
         public void setCustomerId(Long customerId) {

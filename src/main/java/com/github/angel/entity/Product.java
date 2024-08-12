@@ -26,7 +26,10 @@ public class Product implements Serializable {
     private static final long serialVersionUID = 1038171071625172134L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long productId;
+    @Column(name =" category_id", nullable = false, insertable = true, updatable = true)
+    private Long categoryId;
+
     @NotBlank(message = "Name is required")
     @Size(max = 40, message = "Name must be at most 40 characters long")
     @Column(length = 40)
@@ -46,73 +49,84 @@ public class Product implements Serializable {
     @Size(max = 150, message = "Description must be at most 150 characters long")
     @Column(length = 150)
     private String description;
+    
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Category.class)
-    @JoinColumn(name = "category_id")
-    private Category categoryId;
+    @JoinColumn(name = "category_id", insertable = false,  updatable = false)
+    private Category category;
 
     public Product() {
     }
 
-    public Product(Long id, String name, Integer stock, String description, Category categoryId, BigDecimal price) {
-        this.id = id;
+    public Product(Long id, String name, Integer stock, String description, Category category, BigDecimal price) {
+        this.productId = id;
         this.name = name;
         this.stock = stock;
         this.description = description;
-        this.categoryId = categoryId;
+        this.category = category;
         this.price = price;
     }
 
-    public @Positive(message = "Price must be greater than zero") @NotNull(message = "Price is required") @Digits(integer = 6, fraction = 2, message = "Price should be a valid decimal number with up to 6 digits and 2 decimal places") BigDecimal getPrice() {
-        return price;
+   
+
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setPrice(@Positive(message = "Price must be greater than zero") @NotNull(message = "Price is required") @Digits(integer = 6, fraction = 2, message = "Price should be a valid decimal number with up to 6 digits and 2 decimal places") BigDecimal price) {
-        this.price = price;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public @NotBlank(message = "Name is required") @Size(max = 40, message = "Name must be at most 40 characters long") String getName() {
-        return name;
-    }
-
-    public void setName(@NotBlank(message = "Name is required") @Size(max = 40, message = "Name must be at most 40 characters long") String name) {
-        this.name = name;
-    }
-
-    public @PositiveOrZero(message = "Stock must be zero or positive") @NotNull(message = "Stock is required") Integer getStock() {
-        return stock;
-    }
-
-    public void setStock(@PositiveOrZero(message = "Stock must be zero or positive") @NotNull(message = "Stock is required") Integer stock) {
-        this.stock = stock;
-    }
-
-    public @NotBlank(message = "Description is required") @Size(max = 150, message = "Description must be at most 150 characters long") String getDescription() {
-        return description;
-    }
-
-    public void setDescription(@NotBlank(message = "Description is required") @Size(max = 150, message = "Description must be at most 150 characters long") String description) {
-        this.description = description;
-    }
-
-    public Category getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Category categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
     public String toString() {
-        return "Product [id=" + id + ", name=" + name + ", price=" + price + ", stock=" + stock + ", description="
+        return "Product [id=" + productId + ", name=" + name + ", price=" + price + ", stock=" + stock + ", description="
                 + description + "]";
     }
 

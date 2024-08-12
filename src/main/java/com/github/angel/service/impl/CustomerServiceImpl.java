@@ -116,12 +116,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Contract("_ -> new")
     private static @NotNull CustomerDTO mapToCustomerDTO(@NotNull Customer customer) {
-        return new CustomerDTO(customer.getId(),
-                customer.getFirstName(),
-                customer.getLastName(),
-                customer.getEmail(),
-                customer.getTel(),
-                customer.getAddress());
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setCustomerId(customer.getId());
+        customerDTO.setAddress(customer.getAddress());
+        customerDTO.setEmail(customer.getEmail());
+        customerDTO.setTel(customer.getTel());
+        customerDTO.setLastName(customer.getLastName());
+        customerDTO.setFirstName(customer.getFirstName());
+        return customerDTO;
     }
 
 }

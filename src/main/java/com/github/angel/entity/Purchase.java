@@ -76,10 +76,10 @@ public class Purchase implements Serializable {
     @NotNull(message = "Purchase date is required")
     private LocalDateTime purchaseDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Customer.class)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, targetEntity = Customer.class)
     @JoinColumn(name = "customer_id", insertable = false, updatable = false)
     private Customer customer;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Product.class)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, targetEntity = Product.class)
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private Product product;
 
