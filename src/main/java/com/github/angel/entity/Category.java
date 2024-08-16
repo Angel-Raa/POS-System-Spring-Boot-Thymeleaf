@@ -4,6 +4,7 @@ import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 
 import java.io.Serial;
@@ -22,8 +23,10 @@ public class Category implements Serializable {
     @Size(max = 50, message = "Category name must not exceed 50 characters")
     @Column(length = 50, nullable = false, unique = true)
     private String name;
-    @Size(max = 150, message = "Description must not exceed 150 characters")
-    @Column(length = 150)
+    @Size(max = 200, message = "Description must not exceed 200 characters")
+    @Column(length = 200)
+    @Lob
+    @JdbcTypeCode(java.sql.Types.LONGVARCHAR)
     private String description;
     @Type(value = ListArrayType.class, parameters = {
         @org.hibernate.annotations.Parameter(
