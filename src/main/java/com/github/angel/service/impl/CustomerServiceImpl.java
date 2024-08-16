@@ -10,6 +10,7 @@ import java.util.List;
 import com.github.angel.exception.EmailAlreadyExistsException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,22 +27,21 @@ import com.github.angel.exception.ResourceNotFoundException;
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
-
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
+    @Autowired
+    public CustomerServiceImpl( CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<CustomerDTO> findAll() {
-        return customerRepository.findAllDtos();
+        return customerRepository.findAllDto();
     }
 
     @Transactional(readOnly = true)
     @Override
     public CustomerDTO findById(Long theId) {
-        return mapToCustomerDTO(customerRepository.findById(theId)
-                .orElseThrow(() -> new ResourceNotFoundException("Clients not found with that ID " + theId)));
+        return customerRepository.findByIdDto(theId).orElseThrow(() -> new ResourceNotFoundException("Client not found with that ID " + theId));
     }
 
     @Transactional
@@ -52,37 +52,37 @@ public class CustomerServiceImpl implements CustomerService {
         if (customerRepository.existsByEmail(email)) {
             throw new EmailAlreadyExistsException("There is already a client with this email." + email);
         }
-        customerRepository.save(customer);
+        customerRepository.persist(customer);
 
     }
 
     @Transactional
     @Override
     public void update(Long theId, CustomerDTO customerDTO) {
-        Customer customer = customerRepository.findById(theId)
-                .orElseThrow(() -> new ResourceNotFoundException("Clients not found with that ID " + theId));
-        customer.setFirstName(customerDTO.getFirstName());
-        customer.setLastName(customerDTO.getLastName());
-        customer.setEmail(customerDTO.getEmail());
-        customer.setTel(customerDTO.getTel());
-        customer.setAddress(customerDTO.getAddress());
-        customerRepository.save(customer);
-
+        if (customerRepository.existsById(theId)) {
+            Customer customer = mapToCustomer(customerDTO);
+            customer.setId(theId);
+            customerRepository.update(customer);
+        }
+        else {
+            throw new ResourceNotFoundException("Client not found with that ID " + theId);
+        }
     }
 
     @Transactional
     @Override
     public void delete(Long theId) {
-        Customer customer = customerRepository.findById(theId)
-                .orElseThrow(() -> new ResourceNotFoundException("Clients not found with that ID " + theId));
-        customerRepository.delete(customer);
+        if(customerRepository.existsById(theId)){
+            customerRepository.deleteById(theId);
+        }
+        throw new ResourceNotFoundException("Client not found with that ID " + theId);
+
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<CustomerDTO> searchByName(String theName) {
-        return customerRepository.findByFirstNameIgnoreCase(theName).stream()
-                .map(CustomerServiceImpl::mapToCustomerDTO).toList();
+        return customerRepository.findByFirstName(theName);
     }
 
     @Transactional(readOnly = true)
@@ -93,15 +93,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO findByEmail(String email) {
-        return mapToCustomerDTO(customerRepository.findByEmail(email).orElseThrow(
-                () -> new ResourceNotFoundException("A client with that email has not been found" + email)));
+        return  customerRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Client not found with that email " + email));
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<CustomerDTO> findDistinctByLastnameAndFirstname(String firstName, String lastName) {
-        return customerRepository.findByLastnameAndFirstname(firstName, lastName).stream()
-                .map(CustomerServiceImpl::mapToCustomerDTO).toList();
+        return customerRepository.findByLastnameAndFirstname(firstName, lastName);
     }
 
     private static @NotNull Customer mapToCustomer(@NotNull CustomerDTO customerDTO) {

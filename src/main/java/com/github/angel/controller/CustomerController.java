@@ -7,6 +7,7 @@ package com.github.angel.controller;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/customer")
 public class CustomerController {
     private final CustomerService customerService;
-
+    @Autowired
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
@@ -56,7 +57,6 @@ public class CustomerController {
                             FieldError::getDefaultMessage));
             model.addAttribute("errors", errores);
             model.addAttribute("customer", customer);
-            System.out.println(customer.toString());
             return "customer/add-customer";
         }
 
@@ -77,7 +77,6 @@ public class CustomerController {
     public String updateCustomer(@PathVariable @Min(1) Long customerId, final Model model) {
         CustomerDTO customerDTO = customerService.findById(customerId);
         model.addAttribute("customer", customerDTO);
-        System.out.println(customerDTO.toString());
         return "customer/edit-customer";
     }
 
@@ -97,7 +96,6 @@ public class CustomerController {
         }
         customerService.update(customerId, customerDTO);
         model.addAttribute("customer", customerDTO);
-        System.out.println(customerDTO.toString());
         attributes.addFlashAttribute("message", "The customer has been updated successfully");
 
         return "redirect:/customer/list";

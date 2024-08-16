@@ -5,7 +5,8 @@
 
 package com.github.angel.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import io.hypersistence.utils.spring.repository.BaseJpaRepository;
+import org.springframework.data.repository.ListPagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import com.github.angel.entity.Purchase;
@@ -15,6 +16,6 @@ import com.github.angel.entity.Purchase;
  * @author aguero
  */
 @Repository
-public interface PurchaseRepository extends JpaRepository<Purchase, Long>{
+public interface PurchaseRepository extends ListPagingAndSortingRepository<Purchase, Long>, BaseJpaRepository<Purchase, Long> {
 
 }

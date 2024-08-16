@@ -34,17 +34,19 @@ public class CategoryServiceImpl implements CategoryService {
         if (categoryRepository.existsByName(name)) {
             throw new ResourceAlreadyExistsException("Category with name " + name + " already exists");
         }
-        categoryRepository.save(category);
+        categoryRepository.persist(category);
     }
 
     @Transactional
     @Override
     public void updateCategory(Long id, CategoryDTO dto) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No category found with that Id" + id));
-        category.setName(dto.getName());
-        category.setDescription(dto.getDescription());
-        categoryRepository.save(category);
+        if (categoryRepository.existsById(id)) {
+            Category category = matToCategory(dto);
+            category.setCategoryId(id);
+            categoryRepository.update(category);
+        } else {
+            throw new ResourceNotFoundException("No category found with that Id" + id);
+        }
 
     }
 
@@ -57,35 +59,22 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     @Override
     public CategoryDTO getCategoryById(Long id) {
-        return mapToCategoryDto(categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No category found with that Id" + id)));
+        return categoryRepository.findByIdDto(id).orElseThrow(() -> new ResourceNotFoundException("No category found with that Id" + id));
     }
 
     @Transactional
     @Override
     public void deleteCategoryById(Long id) {
-        CategoryDTO categoryDTO = getCategoryById(id);
-        categoryRepository.deleteById(categoryDTO.getCategoryId());
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<ProductDTO> getProductsByCategory(Long categoryId) {
-        return categoryRepository.findByProductsByCategory(categoryId).stream()
-                .map(CategoryServiceImpl::mapToproductDTO)
-                .toList();
+        if (categoryRepository.existsById(id)) {
+            categoryRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException("No category found with that Id" + id);
+        }
     }
 
     @Transactional
     @Override
     public void moveProductToCategory(Long productId, Long newCategoryId) {
-        Product newProduct = productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("No product found with that Id" + productId));
-        Category newCategory = categoryRepository.findById(newCategoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("No category found with that Id" + newCategoryId));
-        newProduct.setCategory(newCategory);
-        productRepository.save(newProduct);
-
     }
 
     @Contract("_ -> new")

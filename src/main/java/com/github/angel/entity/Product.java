@@ -5,6 +5,7 @@
 
 package com.github.angel.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -15,17 +16,20 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.JdbcTypeCode;
 
 /**
  *
  * @author aguero
  */
-@Entity
+@Entity(name = "Product")
 @Table(name = "products")
 public class Product implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1038171071625172134L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Long productId;
     @Column(name =" category_id", nullable = false, insertable = true, updatable = true)
     private Long categoryId;
@@ -46,8 +50,10 @@ public class Product implements Serializable {
     private Integer stock;
 
     @NotBlank(message = "Description is required")
-    @Size(max = 150, message = "Description must be at most 150 characters long")
-    @Column(length = 150)
+    @Size(max = 200, message = "Description must be at most 200 characters long")
+    @Column(length = 200)
+    @Lob
+    @JdbcTypeCode(java.sql.Types.LONGVARCHAR)
     private String description;
     
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Category.class)

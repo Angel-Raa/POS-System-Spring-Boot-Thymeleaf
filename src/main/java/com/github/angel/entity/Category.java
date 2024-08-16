@@ -1,8 +1,10 @@
 package com.github.angel.entity;
 
+import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.Type;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -12,7 +14,7 @@ import java.util.List;
 @Table(name = "categories", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 public class Category implements Serializable {
     @Serial
-    private static long serialVersionUID = 182715381639163161L;
+    private static final long serialVersionUID = 182715381639163161L;
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="category_id")
     private Long categoryId;
@@ -23,6 +25,13 @@ public class Category implements Serializable {
     @Size(max = 150, message = "Description must not exceed 150 characters")
     @Column(length = 150)
     private String description;
+    @Type(value = ListArrayType.class, parameters = {
+        @org.hibernate.annotations.Parameter(
+                name = ListArrayType.SQL_ARRAY_TYPE,
+                value = "products"
+        )
+    })
+    @Column(name = "products", columnDefinition = "products[]")
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity =  Product.class, mappedBy = "category", orphanRemoval = true)
     private List<Product> products;
 

@@ -5,6 +5,7 @@
 
 package com.github.angel.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,13 +33,15 @@ import jakarta.validation.constraints.Size;
  * @author aguero
  */
 
-@Entity
+@Entity(name = "Purchase")
 @Table(name = "purchases")
 public class Purchase implements Serializable {
+    @Serial
     private static final long serialVersionUID = 182615210281710381L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "purchase_id")
+    private Long purchaseId;
     @Column(name = "customer_id", nullable = false, insertable = true, updatable = true)
     private Long customerId;
     @Column(name = "product_id", nullable = false, insertable = true, updatable = true)
@@ -86,8 +89,8 @@ public class Purchase implements Serializable {
     public Purchase() {
     }
 
-    public Purchase(Long id, Long customerId, Long productId, Integer quantity, BigDecimal pricePerUnit, String shippingAddress, String paymentMethod, BigDecimal totalPrice, LocalDateTime purchaseDate, Customer customer, Product product) {
-        this.id = id;
+    public Purchase(Long purchaseId, Long customerId, Long productId, Integer quantity, BigDecimal pricePerUnit, String shippingAddress, String paymentMethod, BigDecimal totalPrice, LocalDateTime purchaseDate, Customer customer, Product product) {
+        this.purchaseId = purchaseId;
         this.customerId = customerId;
         this.productId = productId;
         this.quantity = quantity;
@@ -100,12 +103,12 @@ public class Purchase implements Serializable {
         this.product = product;
     }
 
-    public Long getId() {
-        return id;
+    public Long getPurchaseId() {
+        return purchaseId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPurchaseId(Long purchaseId) {
+        this.purchaseId = purchaseId;
     }
 
     public Long getProductId() {
@@ -190,7 +193,7 @@ public class Purchase implements Serializable {
 
     @Override
     public String toString() {
-        return "Purchase [id=" + id + ", customerId=" + customerId + ", productId=" + productId + ", quantity="
+        return "Purchase [id=" + purchaseId + ", customerId=" + customerId + ", productId=" + productId + ", quantity="
                 + quantity + ", pricePerUnit=" + pricePerUnit + ", totalPrice=" + totalPrice + ", shippingAddress="
                 + shippingAddress + ", paymentMethod=" + paymentMethod + ", purchaseDate=" + purchaseDate
                 + ", customer=" + customer + ", product=" + product + "]";

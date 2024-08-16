@@ -8,12 +8,7 @@ package com.github.angel.entity;
 import java.io.Serial;
 import java.io.Serializable;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -22,14 +17,15 @@ import jakarta.validation.constraints.Size;
  *
  * @author aguero
  */
-@Table(name = "customers")
-@Entity
+@Table(name = "customers", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Entity(name = "Customer")
 public class Customer implements Serializable {
     @Serial
     private static final long serialVersionUID = -1028172617161927111L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "customer_id")
+    private Long customerId;
     @NotBlank(message = "First name field cannot be empty")
     @Size(max = 40, message = "First name must be at most 40 characters long")
     @Column(length = 40)
@@ -61,7 +57,7 @@ public class Customer implements Serializable {
             @NotBlank(message = "Tel field cannot be empty") @Size(max = 40, message = "Tel must be at most 40 characters long") String tel,
             @NotBlank(message = "Email field cannot be empty") @Size(max = 40, message = "Email must be at most 40 characters long") @Email(message = "Invalid email format") String email,
             @NotBlank(message = "Address field cannot be empty") @Size(max = 80, message = "Address must be at most 80 characters long") String address) {
-        this.id = id;
+        this.customerId = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.tel = tel;
@@ -70,11 +66,11 @@ public class Customer implements Serializable {
     }
 
     public Long getId() {
-        return id;
+        return customerId;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.customerId = id;
     }
 
     public String getFirstName() {
@@ -119,7 +115,7 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "Customer [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", tel=" + tel
+        return "Customer [id=" + customerId + ", firstName=" + firstName + ", lastName=" + lastName + ", tel=" + tel
                 + ", email=" + email + ", address=" + address + "]";
     }
 

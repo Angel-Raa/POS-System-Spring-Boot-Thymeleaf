@@ -28,7 +28,6 @@ public class CustomerDTO {
         private String email;
         @NotBlank(message = "Telephone number is required")
         private String tel;
-
         @NotBlank(message = "Address is required")
         @Size(max = 80, message = "Address must not exceed 80 characters")
         private String address;
