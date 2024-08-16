@@ -51,9 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     @Override
     public List<CategoryDTO> getAllCategories() {
-        return categoryRepository.findAll().stream()
-                .map(CategoryServiceImpl::mapToCategoryDto)
-                .toList();
+        return categoryRepository.findAllDtos();
     }
 
     @Transactional(readOnly = true)

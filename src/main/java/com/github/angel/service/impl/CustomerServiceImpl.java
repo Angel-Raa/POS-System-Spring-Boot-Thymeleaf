@@ -34,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional(readOnly = true)
     @Override
     public List<CustomerDTO> findAll() {
-        return customerRepository.findAll().stream().map(CustomerServiceImpl::mapToCustomerDTO).toList();
+        return customerRepository.findAllDtos();
     }
 
     @Transactional(readOnly = true)

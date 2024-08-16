@@ -49,8 +49,8 @@
                         <tr th:each="customer : ${customers}">
                             <td th:text="${customer.firstName}"></td>
                             <td th:text="${customer.lastName}"></td>
-                            <td th:text="${customer.tel}"></td>
                             <td th:text="${customer.email}"></td>
+                            <td th:text="${customer.tel}"></td>
                             <td th:text="${customer.address}"></td>
                             <td>
                                 <!-- Action buttons (edit/delete) -->

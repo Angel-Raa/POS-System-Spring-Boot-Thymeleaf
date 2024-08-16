@@ -8,12 +8,13 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
+@Entity(name = "Category")
 @Table(name = "categories", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 public class Category implements Serializable {
     @Serial
     private static long serialVersionUID = 182715381639163161L;
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name ="category_id")
     private Long categoryId;
     @NotBlank(message = "Category name is required")
     @Size(max = 50, message = "Category name must not exceed 50 characters")
