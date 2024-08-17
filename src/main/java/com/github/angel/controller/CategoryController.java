@@ -8,15 +8,20 @@ package com.github.angel.controller;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.github.angel.dto.CategoryDTO;
 import com.github.angel.entity.Category;
 import com.github.angel.service.CategoryService;
+import com.github.angel.utils.PageRenderUtils;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -69,8 +74,12 @@ public class CategoryController {
     }
 
     @GetMapping("/list")
-    public String getListCategory(final Model model) {
-        model.addAttribute("categories", service.getAllCategories());
+    public String getListCategory(@RequestParam(name = "pages", defaultValue = "0") int pages, final Model model) {
+        Pageable pageRequest = PageRequest.of(pages, 5);
+        Page<CategoryDTO> categories = service.getAllCategories(pageRequest);
+        PageRenderUtils<CategoryDTO> pageableUtils = new PageRenderUtils<>("/category/list", categories);
+        model.addAttribute("pageRenderUtils", pageableUtils);
+        model.addAttribute("categories", categories);
         return "category/list-category";
     }
 

@@ -126,12 +126,4 @@ public class ProductController {
         return categoryService.getAllCategoriesName();
     }
 
-    @ModelAttribute("categoryEdit")
-    public CategoryDTO getCategoryForEdit(@PathVariable(required = false) Long productId) {
-        if (productId != null) {
-            ProductDTO product = service.getProductById(productId);
-            return categoryService.getCategoryById(product.getCategoryId());
-        }
-        return new CategoryDTO();
-    }
 }

@@ -14,7 +14,7 @@
     <div th:replace="layout/header :: header"></div>
 
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Customer List</h1>
+        <h1 class="mt-4">categories List</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item">
                 <a th:href="@{/}">Dashboard</a>
@@ -64,6 +64,27 @@
                         </tr>
                     </tbody>
                 </table>
+                <!-- Pagination start -->
+                <nav th:if="${categories.totalPages > 1}">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${categories.first ? 'disabled' : ''}">
+                            <a class="page-link"
+                                th:href="@{${pageRenderUtils.url}(pages=${categories.number - 1})}">&laquo;</a>
+                        </li>
+
+                        <li class="page-item" th:each="pageNumber : ${pageRenderUtils.pages}"
+                            th:classappend="${pageNumber.current ? 'active' : ''}">
+                            <a class="page-link" th:href="@{${pageRenderUtils.url}(pages=${pageNumber.number - 1})}"
+                                th:text="${pageNumber.number}"></a>
+                        </li>
+
+                        <li class="page-item" th:classappend="${categories.last ? 'disabled' : ''}">
+                            <a class="page-link"
+                                th:href="@{${pageRenderUtils.url}(pages=${categories.number + 1})}">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Pagination end -->
             </div>
         </div>
     </div>

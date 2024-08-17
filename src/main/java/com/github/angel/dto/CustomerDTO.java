@@ -31,6 +31,7 @@ public class CustomerDTO implements Serializable{
         @Email(message = "Invalid email format")
         @Size(max = 40, message = "Email must not exceed 40 characters")
         private String email;
+        
         @NotBlank(message = "Telephone number is required")
         private String tel;
         @NotBlank(message = "Address is required")

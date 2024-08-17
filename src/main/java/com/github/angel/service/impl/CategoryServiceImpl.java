@@ -8,6 +8,8 @@ import com.github.angel.repository.CategoryRepository;
 import com.github.angel.service.CategoryService;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,12 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
+    @Transactional(readOnly = true)
+    @Override
+    public Page<CategoryDTO> getAllCategories(Pageable pageable) {
+        return categoryRepository.findAllDtosPages(pageable);
+    }
+
 
     @Transactional
     @Override
@@ -100,5 +108,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDTO> getAllCategoriesName() {
         return categoryRepository.findAllNameDtos();
     }
+
+  
 
 }
