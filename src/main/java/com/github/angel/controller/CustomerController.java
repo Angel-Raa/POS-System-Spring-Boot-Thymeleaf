@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/customer")
 public class CustomerController {
     private final CustomerService customerService;
-    @Autowired
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
@@ -100,5 +99,13 @@ public class CustomerController {
 
         return "redirect:/customer/list";
     }
+
+    @GetMapping("/delete/{customerId}")
+    public String deleteCustomer(@PathVariable(name = "customerId") @Min(1) Long customerId, final RedirectAttributes attributes) {
+        customerService.delete(customerId);
+        attributes.addFlashAttribute("message", "The customer has been deleted successfully");
+        return "redirect:/customer/list";
+    }
+
 
 }

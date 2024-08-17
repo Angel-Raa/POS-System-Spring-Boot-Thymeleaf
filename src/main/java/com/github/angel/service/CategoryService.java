@@ -8,6 +8,7 @@ public interface CategoryService {
     void createCategory(CategoryDTO categoryDTO);
     void updateCategory(Long id, CategoryDTO dto);
     List<CategoryDTO>getAllCategories ();
+    List<CategoryDTO> getAllCategoriesName();
     CategoryDTO getCategoryById(Long id);
     void deleteCategoryById(Long id);
     boolean existsByName(String name);

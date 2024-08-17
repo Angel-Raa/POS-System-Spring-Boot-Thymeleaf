@@ -19,6 +19,9 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, BaseJ
     boolean existsByName(String name);
     @Query("SELECT new com.github.angel.dto.CategoryDTO(c.categoryId, c.name, c.description) FROM Category c")
     List<CategoryDTO> findAllDtos();
+
+    @Query("SELECT new com.github.angel.dto.CategoryDTO(c.categoryId, c.name) FROM Category c")
+    List<CategoryDTO> findAllNameDtos();
     @Query("SELECT new com.github.angel.dto.CategoryDTO(c.categoryId, c.name, c.description) FROM Category c WHERE c.categoryId = :categoryId")
     Optional<CategoryDTO> findByIdDto(@Param("categoryId") Long categoryId);
 }

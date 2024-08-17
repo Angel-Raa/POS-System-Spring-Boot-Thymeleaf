@@ -16,6 +16,14 @@ public class CategoryDTO {
         public CategoryDTO() {
         }
 
+        
+        public CategoryDTO(Long categoryId,
+                        @NotBlank(message = "Category name is required") @Size(max = 50, message = "Category name must not exceed 50 characters") String name) {
+                this.categoryId = categoryId;
+                this.name = name;
+        }
+
+
         public CategoryDTO(Long categoryId,
                         @NotBlank(message = "Category name is required") @Size(max = 50, message = "Category name must not exceed 50 characters") String name,
                         @Size(max = 150, message = "Description must not exceed 150 characters") String description) {

@@ -27,8 +27,8 @@ import com.github.angel.exception.ResourceNotFoundException;
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
-    @Autowired
-    public CustomerServiceImpl( CustomerRepository customerRepository) {
+
+    public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
@@ -41,7 +41,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional(readOnly = true)
     @Override
     public CustomerDTO findById(Long theId) {
-        return customerRepository.findByIdDto(theId).orElseThrow(() -> new ResourceNotFoundException("Client not found with that ID " + theId));
+        return customerRepository.findByIdDto(theId)
+                .orElseThrow(() -> new ResourceNotFoundException("Client not found with that ID " + theId));
     }
 
     @Transactional
@@ -63,8 +64,7 @@ public class CustomerServiceImpl implements CustomerService {
             Customer customer = mapToCustomer(customerDTO);
             customer.setId(theId);
             customerRepository.update(customer);
-        }
-        else {
+        } else {
             throw new ResourceNotFoundException("Client not found with that ID " + theId);
         }
     }
@@ -72,10 +72,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     @Override
     public void delete(Long theId) {
-        if(customerRepository.existsById(theId)){
+        if (customerRepository.existsById(theId)) {
             customerRepository.deleteById(theId);
+        } else {
+            throw new ResourceNotFoundException("Client not found with that ID " + theId);
         }
-        throw new ResourceNotFoundException("Client not found with that ID " + theId);
 
     }
 
@@ -93,7 +94,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO findByEmail(String email) {
-        return  customerRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Client not found with that email " + email));
+        return customerRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Client not found with that email " + email));
     }
 
     @Transactional(readOnly = true)

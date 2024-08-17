@@ -5,6 +5,9 @@
 
 package com.github.angel.dto;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -14,7 +17,9 @@ import jakarta.validation.constraints.Size;
  *
  * @author aguero
  */
-public class CustomerDTO {
+public class CustomerDTO implements Serializable{
+        @Serial
+        private static final long serialVersionUID = 716251527152197137L;
         Long customerId;
         @NotBlank(message = "First name is required")
         @Size(max = 40, message = "First name must not exceed 40 characters")

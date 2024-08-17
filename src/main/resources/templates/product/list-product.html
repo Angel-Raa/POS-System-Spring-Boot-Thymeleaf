@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
+
+    <title>POs</title>
+
+</head>
+
+<body class="sb-nav-fixed">
+    <div th:replace="layout/header :: header"></div>
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Product List</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item">
+                <a th:href="@{/}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Product List</li>
+        </ol>
+
+        <!-- Mostrar el mensaje de éxito si está presente -->
+        <div th:if="${message != null}" class="alert alert-success">
+            <span th:text="${message}"></span>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Product List
+            </div>
+            <div class="card-body">
+                <!-- Table start -->
+                <table class="table table-striped" id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="product : ${products}">
+                            <td th:text="${product.name}"></td>
+                            <td th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 2, 'COMMA')}"></td>
+                            <td th:text="${product.stock}"></td>
+                            <td th:text="${product.description}"></td>
+                            <td th:text="${product.categoryId}"></td>
+                            <!-- Assuming categoryName is available in the ProductDTO -->
+
+                            <td>
+                                <!-- Action buttons (edit/delete) -->
+                                <div class="btn-group" role="group">
+                                    <a th:href="@{/product/edit/}+${product.productId}" class="btn btn-warning btn-sm">
+                                        Edit
+                                    </a>
+                                    <a th:href="@{/product/delete/}+${product.productId}" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Are you sure you want to delete this product?');">
+                                        Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Table end-->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script>
+    <!-- Optional: Include FontAwesome for icons -->
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js}"></script>
+
+</body>
+
+</html>

@@ -103,4 +103,11 @@ public class CategoryController {
         return "redirect:/category/list";
     }
 
+    @GetMapping("/delete/{categoryId}")
+    public String deleteCategory(@PathVariable @Min(1) Long categoryId, final RedirectAttributes attributes) {
+        service.deleteCategoryById(categoryId);
+        attributes.addFlashAttribute("message", "The category has been deleted successfully");
+        return "redirect:/category/list";
+    }
+
 }

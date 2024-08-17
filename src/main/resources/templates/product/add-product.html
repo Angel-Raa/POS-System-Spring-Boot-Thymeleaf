@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
+    <title>POs</title>
+</head>
+
+<body class="sb-nav-fixed">
+    <div th:replace="layout/header :: header"></div>
+
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Add Product</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item">
+                            <a th:href="@{/}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active">Add Product</li>
+                    </ol>
+
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h2 class="card-title">Add Product</h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" th:action="@{/product}" th:object="${product}">
+
+                                <!-- Product name -->
+                                <div class="mb-3">
+                                    <label for="firstname" class="form-label">Product name</label>
+                                    <input th:field="*{name}" type="text" class="form-control" id="firstname"
+                                        th:classappend="${errors != null && errors.containsKey('name')} ? 'is-invalid'"
+                                        placeholder="Enter first name" />
+                                    <div class="invalid-feedback"
+                                        th:if="${errors != null && errors.containsKey('name')}"
+                                        th:text="${errors['name']}"></div>
+                                </div>
+                                <!-- Price -->
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">Price</label>
+                                    <input th:field="*{price}" type="number" class="form-control" id="price" step="0.01"
+                                        th:classappend="${errors != null && errors.containsKey('price')} ? 'is-invalid'"
+                                        placeholder="Enter price" />
+                                    <div class="invalid-feedback"
+                                        th:if="${errors != null && errors.containsKey('price')}"
+                                        th:text="${errors['price']}"></div>
+                                </div>
+
+                                <!-- Stock -->
+                                <div class="mb-3">
+                                    <label for="stock" class="form-label">Stock</label>
+                                    <input th:field="*{stock}" type="number" class="form-control" id="stock"
+                                        th:classappend="${errors != null && errors.containsKey('stock')} ? 'is-invalid'"
+                                        placeholder="Enter stock quantity" />
+                                    <div class="invalid-feedback"
+                                        th:if="${errors != null && errors.containsKey('stock')}"
+                                        th:text="${errors['stock']}"></div>
+                                </div>
+
+                                <!-- Description -->
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea th:field="*{description}" class="form-control" id="description"
+                                        th:classappend="${errors != null && errors.containsKey('description')} ? 'is-invalid'"
+                                        placeholder="Enter product description"></textarea>
+                                    <div class="invalid-feedback"
+                                        th:if="${errors != null && errors.containsKey('description')}"
+                                        th:text="${errors['description']}"></div>
+                                </div>
+
+                                <!-- Category -->
+                                <div class="mb-3">
+                                    <label for="categoryId" class="form-label">Category</label>
+                                    <select th:field="*{categoryId}" class="form-select" id="categoryId"
+                                        th:classappend="${errors != null && errors.containsKey('categoryId')} ? 'is-invalid'">
+                                        <option value="" disabled selected>Seleccione una categoría</option>
+                                        <option th:each="category : ${categories}" th:value="${category.categoryId}"
+                                            th:text="${category.name}"></option>
+                                    </select>
+                                    <div class="invalid-feedback"
+                                        th:if="${errors != null && errors.containsKey('categoryId')}"
+                                        th:text="${errors['categoryId']}"></div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <button type="submit" class="btn btn-primary">Add Product</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+
+
+</body>
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script>
+
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script>
+<!-- Optional: Include FontAwesome for icons -->
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js}"></script>
+
+</html>

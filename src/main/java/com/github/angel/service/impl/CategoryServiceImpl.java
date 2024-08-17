@@ -1,13 +1,10 @@
 package com.github.angel.service.impl;
 
 import com.github.angel.dto.CategoryDTO;
-import com.github.angel.dto.ProductDTO;
 import com.github.angel.entity.Category;
-import com.github.angel.entity.Product;
 import com.github.angel.exception.ResourceAlreadyExistsException;
 import com.github.angel.exception.ResourceNotFoundException;
 import com.github.angel.repository.CategoryRepository;
-import com.github.angel.repository.ProductRepository;
 import com.github.angel.service.CategoryService;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -19,11 +16,9 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
-    private final ProductRepository productRepository;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, ProductRepository productRepository) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
-        this.productRepository = productRepository;
     }
 
     @Transactional
@@ -59,7 +54,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     @Override
     public CategoryDTO getCategoryById(Long id) {
-        return categoryRepository.findByIdDto(id).orElseThrow(() -> new ResourceNotFoundException("No category found with that Id" + id));
+        return categoryRepository.findByIdDto(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No category found with that Id" + id));
     }
 
     @Transactional
@@ -94,20 +90,15 @@ public class CategoryServiceImpl implements CategoryService {
         return category;
     }
 
-    @Contract(pure = true)
-    private static @NotNull ProductDTO mapToproductDTO(Product product) {
-        return new ProductDTO(
-                product.getProductId(),
-                product.getName(),
-                product.getPrice(),
-                product.getStock(),
-                product.getDescription(),
-                product.getCategoryId());
-    }
 
     @Override
     public boolean existsByName(String name) {
         return categoryRepository.existsByName(name);
+    }
+
+    @Override
+    public List<CategoryDTO> getAllCategoriesName() {
+        return categoryRepository.findAllNameDtos();
     }
 
 }
