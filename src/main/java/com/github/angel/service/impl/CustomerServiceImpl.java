@@ -10,7 +10,8 @@ import java.util.List;
 import com.github.angel.exception.EmailAlreadyExistsException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Page<CustomerDTO> findAllDtosPages(Pageable pageable) {
+        return customerRepository.findAllDtoPages(pageable);
     }
 
     @Transactional(readOnly = true)
@@ -125,5 +132,11 @@ public class CustomerServiceImpl implements CustomerService {
         customerDTO.setFirstName(customer.getFirstName());
         return customerDTO;
     }
+
+
+
+    
+
+   
 
 }

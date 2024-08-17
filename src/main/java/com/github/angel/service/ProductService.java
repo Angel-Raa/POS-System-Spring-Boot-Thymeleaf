@@ -7,6 +7,9 @@ package com.github.angel.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.github.angel.dto.ProductDTO;
 
 /**
@@ -22,6 +25,7 @@ public interface ProductService {
     List<ProductDTO> searchProducts(String name);
     List<ProductDTO> getProductsByCategory(Long categoryId);
     List<ProductDTO> searchProductsByCategory(Long categoryId, String name);
+    Page<ProductDTO> getAllProducts(Pageable pageable);
 
     
 

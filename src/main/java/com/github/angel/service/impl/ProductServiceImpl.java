@@ -7,6 +7,8 @@ package com.github.angel.service.impl;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +30,12 @@ public class ProductServiceImpl implements ProductService {
     public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-
+    @Transactional(readOnly = true)
+    @Override
+    public Page<ProductDTO> getAllProducts(Pageable pageable) {
+        return productRepository.findAllDtosPage(pageable);
+         
+    }
     @Transactional
     @Override
     public void createProduct(ProductDTO dto) {
@@ -82,6 +89,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     @Override
     public List<ProductDTO> searchProductsByCategory(Long categoryId, String name) {
+       
         return productRepository.findByProductsByCategory(categoryId, name);
     }
 
@@ -96,4 +104,6 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(dto.getPrice());
         return product;
     }
+
+    
 }

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,12 +20,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.github.angel.dto.CategoryDTO;
 import com.github.angel.dto.ProductDTO;
 import com.github.angel.service.CategoryService;
 import com.github.angel.service.ProductService;
+import com.github.angel.utils.PageRenderUtils;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -70,8 +74,14 @@ public class ProductController {
     }
 
     @GetMapping("/list")
-    public String getAllProduct(final Model model) {
-        model.addAttribute("products", service.getAllProducts());
+    public String getAllProduct(final Model model,
+            @RequestParam(name = "pages", defaultValue = "0") int pages) {
+
+        PageRequest pageRequest = PageRequest.of(pages, 5);
+        Page<ProductDTO> products = service.getAllProducts(pageRequest);
+        PageRenderUtils<ProductDTO> pageableUtils = new PageRenderUtils<>("/product/list", products);
+        model.addAttribute("pageRenderUtils", pageableUtils);
+        model.addAttribute("products", products);
         return "product/list-product";
     }
 
@@ -104,14 +114,12 @@ public class ProductController {
         return "redirect:/product/list";
     }
 
-    
     @GetMapping("/delete/{productId}")
     public String deleteProduct(@PathVariable Long productId, final RedirectAttributes attributes) {
         service.deleteProduct(productId);
         attributes.addFlashAttribute("message", "The product has been deleted successfully.");
         return "redirect:/product/list";
     }
-
 
     @ModelAttribute("categories")
     public List<CategoryDTO> getCategories() {
@@ -124,6 +132,6 @@ public class ProductController {
             ProductDTO product = service.getProductById(productId);
             return categoryService.getCategoryById(product.getCategoryId());
         }
-        return new CategoryDTO(); 
+        return new CategoryDTO();
     }
 }

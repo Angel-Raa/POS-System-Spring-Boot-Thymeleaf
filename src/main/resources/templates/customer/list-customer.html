@@ -69,6 +69,27 @@
                         </tr>
                     </tbody>
                 </table>
+                <!-- Pagination start -->
+                <nav th:if="${customers.totalPages > 1}">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${customers.first ? 'disabled' : ''}">
+                            <a class="page-link"
+                                th:href="@{${pageRenderUtils.url}(pages=${customers.number - 1})}">&laquo;</a>
+                        </li>
+
+                        <li class="page-item" th:each="pageNumber : ${pageRenderUtils.pages}"
+                            th:classappend="${pageNumber.current ? 'active' : ''}">
+                            <a class="page-link" th:href="@{${pageRenderUtils.url}(pages=${pageNumber.number - 1})}"
+                                th:text="${pageNumber.number}"></a>
+                        </li>
+
+                        <li class="page-item" th:classappend="${customers.last ? 'disabled' : ''}">
+                            <a class="page-link"
+                                th:href="@{${pageRenderUtils.url}(pages=${customers.number + 1})}">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Pagination end -->
             </div>
         </div>
     </div>

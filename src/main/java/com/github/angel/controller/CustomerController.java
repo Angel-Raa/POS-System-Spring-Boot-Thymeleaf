@@ -7,15 +7,18 @@ package com.github.angel.controller;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.github.angel.dto.CustomerDTO;
 import com.github.angel.service.CustomerService;
+import com.github.angel.utils.PageRenderUtils;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -67,8 +70,12 @@ public class CustomerController {
     }
 
     @GetMapping("/list")
-    public String listCustomers(final Model model) {
-        model.addAttribute("customers", customerService.findAll());
+    public String listCustomers(@RequestParam(name = "pages", defaultValue  = "0") int pages, final Model model) {
+        PageRequest pageRequest = PageRequest.of(pages, 5);
+        Page<CustomerDTO> customers = customerService.findAllDtosPages(pageRequest);
+        PageRenderUtils<CustomerDTO> pageableUtils =  new PageRenderUtils<>("/customer/list", customers);
+        model.addAttribute("pageRenderUtils", pageableUtils);
+        model.addAttribute("customers", customers);
         return "customer/list-customer";
     }
 
