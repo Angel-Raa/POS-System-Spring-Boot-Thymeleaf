@@ -9,11 +9,6 @@ import java.io.Serial;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.angel.utils.Role;
-
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-
 /**
  *
  * @author aguero
@@ -24,16 +19,14 @@ public class User implements Serializable {
     private String email;
     @JsonIgnore
     private String password;
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
+   
     public User() {
     }
 
-    public User(String email, String password, Role role) {
+    public User(String email, String password) {
         this.email = email;
         this.password = password;
-        this.role = role;
+      
     }
 
     public String getEmail() {
@@ -52,17 +45,8 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
-    }
+    
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    @Override
-    public String toString() {
-        return "User [email=" + email + ", password=" + password + ", role=" + role + "]";
-    }
+   
 
 }

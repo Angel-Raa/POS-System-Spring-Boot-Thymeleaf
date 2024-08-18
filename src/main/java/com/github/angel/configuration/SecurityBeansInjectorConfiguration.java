@@ -9,6 +9,6 @@ package com.github.angel.configuration;
  *
  * @author aguero
  */
-public class SecurityBeansInjector {
+public class SecurityBeansInjectorConfiguration {
 
 }
