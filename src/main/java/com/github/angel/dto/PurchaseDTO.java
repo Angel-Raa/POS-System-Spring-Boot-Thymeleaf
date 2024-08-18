@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-
 public class PurchaseDTO implements Serializable {
         @Serial
         private static final long serialVersionUID = -3716351729173619183L;
@@ -56,12 +55,11 @@ public class PurchaseDTO implements Serializable {
         public PurchaseDTO() {
         }
 
-
-
-
-      
-
-
+        public PurchaseDTO(Long purchaseId,
+                        @PositiveOrZero(message = "Quantity must be a positive value or zero") @NotNull(message = "Quantity is required") Integer quantity) {
+                this.purchaseId = purchaseId;
+                this.quantity = quantity;
+        }
 
         public PurchaseDTO(Long purchaseId, Long customerId, Long productId,
                         @PositiveOrZero(message = "Quantity must be a positive value or zero") @NotNull(message = "Quantity is required") Integer quantity,
@@ -84,13 +82,6 @@ public class PurchaseDTO implements Serializable {
                 this.note = note;
                 this.updateAt = updateAt;
         }
-
-
-
-
-
-
-
 
         public Long getPurchaseId() {
                 return purchaseId;
@@ -179,8 +170,6 @@ public class PurchaseDTO implements Serializable {
         public void setUpdateAt(LocalDateTime updateAt) {
                 this.updateAt = updateAt;
         }
-
-        
 
         @Override
         public String toString() {

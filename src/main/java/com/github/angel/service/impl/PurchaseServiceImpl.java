@@ -68,7 +68,9 @@ public class PurchaseServiceImpl implements PurchaseService {
         // Verificar que haya suficiente stock
         ProductStockDTO productStockDTO = productRepository.findProductStocByProductId(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
         validateStock(productStockDTO, purchaseDTO.getQuantity());
+
         if (productStockDTO.getStock() < purchaseDTO.getQuantity()) {
             throw new InsufficientStockException("Insufficient stock for product with id: " + productId);
         }
@@ -84,6 +86,59 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchase.setPricePerUnit(pricePerUnit);
         // Guardar la compra en la base de datos
         purchaseRepository.persist(purchase);
+    }
+
+    @Transactional
+    @Override
+    public void updatePurchase(Long id, PurchaseDTO purchaseDTO) {
+        final Long productId = purchaseDTO.getProductId();
+        final Long customerId = purchaseDTO.getCustomerId();
+
+        PurchaseValidationDTO validationResult = purchaseRepository.purchaseValidation(customerId, productId);
+        if (!validationResult.isCustomerExists()) {
+            throw new ResourceNotFoundException("Customer not found");
+        }
+        if (!validationResult.isProductExists()) {
+            throw new ResourceNotFoundException("Product not found");
+        }
+
+        // Obtener la compra existente
+        PurchaseDTO existingPurchase = purchaseRepository.findPurchaseDetailsById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Purchase not found"));
+        ProductStockDTO productStockDTO = productRepository.findProductStocByProductId(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
+        Integer oldQuantity = existingPurchase.getQuantity();
+        Integer newQuantity = purchaseDTO.getQuantity();
+        Integer quantityDifference = oldQuantity - newQuantity;
+        System.out.println(quantityDifference);
+        // Validar stock solo si la cantidad aumenta
+        if (quantityDifference > 0) {
+            validateStock(productStockDTO, quantityDifference);
+        }
+
+        // Update the stock based on the new quantity
+        Integer newStock = productStockDTO.getStock() - quantityDifference;
+        productRepository.updateStock(productId, newStock);
+
+        // Calculate the new total price
+        BigDecimal newTotalPrice = productStockDTO.getPrice().multiply(BigDecimal.valueOf(newQuantity));
+        BigDecimal newPricePerUnit = productStockDTO.getPrice();
+        Purchase purchase = mapToPurchaseDto(purchaseDTO);
+        purchase.setTotalPrice(newTotalPrice);
+        purchase.setPricePerUnit(newPricePerUnit);
+        purchaseRepository.update(purchase);
+
+    }
+
+    @Transactional
+    @Override
+    public void deletePurchase(Long id) {
+        if (purchaseRepository.existsById(id)) {
+            purchaseRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException("Purchase not found");
+        }
     }
 
     private Purchase mapToPurchaseDto(PurchaseDTO dto) {
@@ -106,19 +161,15 @@ public class PurchaseServiceImpl implements PurchaseService {
         Objects.requireNonNull(product, "Product cannot be null");
         Objects.requireNonNull(requestedQuantity, "Requested quantity cannot be null");
 
-        if (requestedQuantity <= 0) {
-            throw new IllegalArgumentException("Requested quantity must be a positive number");
-        }
-
         Integer availableStock = product.getStock();
         if (availableStock == null) {
-            throw new IllegalStateException("Product stock is not set for product: ");
+            throw new IllegalStateException("Product stock is not set for product: " + product.getProductId());
         }
 
         if (availableStock < requestedQuantity) {
             throw new InsufficientStockException(String.format(
-                    "Insufficient stock for. Available: %d, Requested: %d",
-                    availableStock, requestedQuantity));
+                    "Insufficient stock for product %d. Available: %d, Requested: %d",
+                    product.getProductId(), availableStock, requestedQuantity));
         }
     }
 

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Purchase</title>
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+
+<body class="sb-nav-fixed">
+    <div th:replace="layout/header :: header"></div>
+    <div th:if="${message != null}" class="alert alert-danger" role="alert">
+        <span th:text="${message}"></span>
+    </div>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Edit Purchase</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item">
+                            <a th:href="@{/}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active">Edit Purchase</li>
+                    </ol>
+
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h2 class="card-title">Edit Purchase</h2>
+                        </div>
+                        <div class="card-body">
+                            <!-- Form start -->
+                            <form method="post" th:action="@{/purchase/edit/}+${purchase.purchaseId}" th:object="${purchase}">
+                                <!-- Customer ID -->
+                                <div class="mb-3">
+                                    <label for="customerId" class="form-label">Customer</label>
+                                    <input type="text" id="customerAutocomplete" class="form-control" />
+                                    <input type="hidden" th:field="*{customerId}" id="customerId" />
+                                    <ul id="suggestionList" class="list-group" style="position: absolute; z-index: 100;"></ul>
+                                </div>
+
+                                <!-- Product Selection with Suggestion -->
+                                <div class="mb-3">
+                                    <label for="productId" class="form-label">Product</label>
+                                    <input th:field="*{productId}" list="productList" class="form-control"
+                                        id="productId"
+                                        th:classappend="${errors != null && errors.containsKey('productId')} ? 'is-invalid'" />
+                                    <datalist id="productList">
+                                        <option th:each="product : ${products}" th:value="${product.productId}"
+                                            th:text="${product.name}"></option>
+                                    </datalist>
+                                    <div class="invalid-feedback"
+                                        th:if="${errors != null && errors.containsKey('productId')}"
+                                        th:text="${errors['productId']}"></div>
+                                </div>
+
+                                <!-- Quantity -->
+                                <div class="mb-3">
+                                    <label for="quantity" class="form-label">Quantity</label>
+                                    <input th:field="*{quantity}" type="number" class="form-control" id="quantity"
+                                        th:classappend="${errors != null && errors.containsKey('quantity')} ? 'is-invalid'" />
+                                    <div class="invalid-feedback"
+                                        th:if="${errors != null && errors.containsKey('quantity')}"
+                                        th:text="${errors['quantity']}"></div>
+                                </div>
+
+                                <!-- Shipping Address -->
+                                <div class="mb-3">
+                                    <label for="shippingAddress" class="form-label">Shipping Address</label>
+                                    <input th:field="*{shippingAddress}" type="text" class="form-control"
+                                        id="shippingAddress"
+                                        th:classappend="${errors != null && errors.containsKey('shippingAddress')} ? 'is-invalid'" />
+                                    <div class="invalid-feedback"
+                                        th:if="${errors != null && errors.containsKey('shippingAddress')}"
+                                        th:text="${errors['shippingAddress']}"></div>
+                                </div>
+
+                                <!-- Payment Method -->
+                                <div class="mb-3">
+                                    <label for="paymentMethod" class="form-label">Payment Method</label>
+                                    <select th:field="*{paymentMethod}" class="form-select" id="paymentMethod"
+                                        th:classappend="${errors != null && errors.containsKey('paymentMethod')} ? 'is-invalid'">
+                                        <option value="" selected>Select a payment method</option>
+                                        <option th:each="method : ${paymentMethods}" th:value="${method}"
+                                            th:text="${method}"></option>
+                                    </select>
+                                    <div class="invalid-feedback"
+                                        th:if="${errors != null && errors.containsKey('paymentMethod')}"
+                                        th:text="${errors['paymentMethod']}"></div>
+                                </div>
+
+
+                                <!-- Note -->
+                                <div class="mb-3">
+                                    <label for="note" class="form-label">Note</label>
+                                    <textarea th:field="*{note}" class="form-control" id="note" rows="3"
+                                        th:classappend="${errors != null && errors.containsKey('note')} ? 'is-invalid'"></textarea>
+                                    <div class="invalid-feedback"
+                                        th:if="${errors != null && errors.containsKey('note')}"
+                                        th:text="${errors['note']}"></div>
+                                </div>
+
+                                <!-- Update At (disabled as it's auto-generated) -->
+
+
+                                <!-- Submit Button -->
+                                <button type="submit" class="btn btn-primary">Add Purchase</button>
+                            </form>
+                            <!-- Form End -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+
+
+    <!-- Success Message -->
+    <div th:if="${successMessage}" class="alert alert-success mt-3">
+        <p th:text="${successMessage}"></p>
+    </div>
+    </div>
+    <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

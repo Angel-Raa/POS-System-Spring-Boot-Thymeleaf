@@ -78,10 +78,10 @@
                             <td>
                                 <!-- Botones de acción para editar y eliminar -->
                                 <div class="btn-group" role="group">
-                                    <a th:href="@{/purchase/edit/{id}(id=${purchase.purchaseId})}" class="btn btn-warning btn-sm">
+                                    <a th:href="@{/purchase/edit/}+${purchase.purchaseId}" class="btn btn-warning btn-sm">
                                         Edit
                                     </a>
-                                    <a th:href="@{/purchase/delete/{id}(id=${purchase.purchaseId})}" class="btn btn-danger btn-sm"
+                                    <a th:href="@{/purchase/delete/}+${purchase.purchaseId}" class="btn btn-danger btn-sm"
                                        onclick="return confirm('Are you sure you want to delete this purchase?');">
                                         Delete
                                     </a>

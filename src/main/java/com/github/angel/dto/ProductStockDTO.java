@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 public class ProductStockDTO implements Serializable{
     @Serial
     private static final long serialVersionUID = 2715252716241427153L;
+    private Long productId;
     private Integer stock;
     private BigDecimal price;
     public ProductStockDTO() {
@@ -33,7 +34,18 @@ public class ProductStockDTO implements Serializable{
     public BigDecimal getPrice() {
         return price;
     }
+    public Long getProductId() {
+        return productId;
+    }
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
     public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+    public ProductStockDTO(Long productId, Integer stock, BigDecimal price) {
+        this.productId = productId;
+        this.stock = stock;
         this.price = price;
     }
     @Override

@@ -30,7 +30,7 @@ public class CustomerEndpoint {
     }
 
     @GetMapping
-    public ResponseEntity<List<CustomerDTO>> searchByName (@RequestParam String query){
+    public ResponseEntity<List<CustomerDTO>> searchByName(@RequestParam String query) {
         return ResponseEntity.ok(customerService.searchByName(query));
     }
 }

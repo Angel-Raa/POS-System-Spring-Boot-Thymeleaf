@@ -27,48 +27,54 @@ import org.springframework.data.domain.Page;
  */
 @Repository
 public interface PurchaseRepository
-                extends ListPagingAndSortingRepository<Purchase, Long>, BaseJpaRepository<Purchase, Long> {
-        @Query(value = """
-                        SELECT NEW com.github.angel.dto.PurchaseDTO(
-                           p.purchaseId,p.customerId, p.productId, p.quantity, p.pricePerUnit, p.totalPrice, p.shippingAddress, p.paymentMethod, p.purchaseDate, p.note, p.updateAt
-                        ) FROM Purchase p
-                        """, countQuery = "SELECT COUNT(p.purchaseId) FROM Purchase p")
-        Page<PurchaseDTO> findAllPage(Pageable pageable);
+      extends ListPagingAndSortingRepository<Purchase, Long>, BaseJpaRepository<Purchase, Long> {
+   @Query(value = """
+         SELECT NEW com.github.angel.dto.PurchaseDTO(
+            p.purchaseId,p.customerId, p.productId, p.quantity, p.pricePerUnit, p.totalPrice, p.shippingAddress, p.paymentMethod, p.purchaseDate, p.note, p.updateAt
+         ) FROM Purchase p
+         """, countQuery = "SELECT COUNT(p.purchaseId) FROM Purchase p")
+   Page<PurchaseDTO> findAllPage(Pageable pageable);
 
-        @Query(value = """
-                        SELECT com.github.angel.dto.PurchaseDTO(
-                           p.purchaseId,p.customerId, p.productId, p.quantity, p.pricePerUnit, p.totalPrice, p.shippingAddress, p.paymentMethod, p.purchaseDate, p.updateAt
-                        ) FROM Purchase p
-                        WHERE p.purchaseId = :purchaseId
-                        """)
-        Optional<PurchaseDTO> findByPurchaseIdDto(@Param("purchaseId") Long purchaseId);
+   @Query(value = """
+         SELECT NEW com.github.angel.dto.PurchaseDTO(
+            p.purchaseId,p.customerId, p.productId, p.quantity, p.pricePerUnit, p.totalPrice, p.shippingAddress, p.paymentMethod, p.purchaseDate, p.note, p.updateAt
+         ) FROM Purchase p
+         WHERE p.purchaseId = :purchaseId
+         """)
+   Optional<PurchaseDTO> findByPurchaseIdDto(@Param("purchaseId") Long purchaseId);
 
-        @Query(value = """
-                        SELECT com.github.angel.dto.PurchaseDTO(
-                           p.purchaseId,p.customerId, p.productId, p.quantity, p.pricePerUnit, p.totalPrice, p.shippingAddress, p.paymentMethod, p.purchaseDate, p.updateAt
-                        ) FROM Purchase p
-                        ORDER BY p.purchaseDate
-                        """)
-        List<PurchaseDTO> findByOrderByPurchaseDate();
+   @Query(value = """
+         SELECT com.github.angel.dto.PurchaseDTO(
+            p.purchaseId,p.customerId, p.productId, p.quantity, p.pricePerUnit, p.totalPrice, p.shippingAddress, p.paymentMethod, p.purchaseDate, p.updateAt
+         ) FROM Purchase p
+         ORDER BY p.purchaseDate
+         """)
+   List<PurchaseDTO> findByOrderByPurchaseDate();
 
-        @Query(value = """
-                            SELECT com.github.angel.dto.PurchaseDTO(
-                                   p.purchaseId,p.customerId, p.productId, p.quantity, p.pricePerUnit, p.totalPrice, p.shippingAddress, p.paymentMethod, p.purchaseDate, p.updateAt
-                                ) FROM Purchase p
-                                 WHERE p.customerId = :customerId
-                                 ORDER BY p.purchaseDate
-                        """)
-        List<PurchaseDTO> findByCustomerIdOrderByPurchaseDate(@Param("customerId") Long customerId);
+   @Query(value = """
+             SELECT NEW com.github.angel.dto.PurchaseDTO(
+                    p.purchaseId,p.customerId, p.productId, p.quantity, p.pricePerUnit, p.totalPrice, p.shippingAddress, p.paymentMethod, p.purchaseDate, p.note, p.updateAt
+                 ) FROM Purchase p
+                  WHERE p.customerId = :customerId
+                  ORDER BY p.purchaseDate
+         """)
+   List<PurchaseDTO> findByCustomerIdOrderByPurchaseDate(@Param("customerId") Long customerId);
 
-        @Query("""
-                        SELECT NEW com.github.angel.dto.PurchaseValidationDTO(
-                                   COUNT(DISTINCT c) > 0,
-                                   COUNT(DISTINCT p) > 0
-                               )
-                               FROM Customer c, Product p
-                               WHERE c.customerId = :customerId AND p.productId = :productId
-                           """)
-        PurchaseValidationDTO purchaseValidation(@Param("customerId") Long customerId,
-                        @Param("productId") Long productId);
+   @Query("""
+         SELECT NEW com.github.angel.dto.PurchaseValidationDTO(
+                    COUNT(DISTINCT c) > 0,
+                    COUNT(DISTINCT p) > 0
+                )
+                FROM Customer c, Product p
+                WHERE c.customerId = :customerId AND p.productId = :productId
+            """)
+   PurchaseValidationDTO purchaseValidation(@Param("customerId") Long customerId,
+         @Param("productId") Long productId);
+
+   @Query("""
+         SELECT NEW com.github.angel.dto.PurchaseDTO(p.purchaseId,  p.quantity) FROM Purchase p
+         WHERE p.purchaseId = :purchaseId
+         """)
+   Optional<PurchaseDTO> findPurchaseDetailsById(@Param("purchaseId") Long purchaseId);
 
 }

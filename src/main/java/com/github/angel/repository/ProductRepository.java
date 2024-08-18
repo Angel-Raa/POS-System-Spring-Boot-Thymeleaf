@@ -51,7 +51,7 @@ public interface ProductRepository
     @Query("UPDATE Product p SET p.stock = :newStock WHERE p.productId = :productId")
     void updateStock(@Param("productId") Long productId, @Param("newStock") int newStock);
 
-    @Query("SELECT NEW com.github.angel.dto.ProductStockDTO(p.stock, p.price) FROM Product p WHERE p.productId =:productId")
+    @Query("SELECT NEW com.github.angel.dto.ProductStockDTO(p.productId, p.stock, p.price) FROM Product p WHERE p.productId =:productId")
     Optional<ProductStockDTO> findProductStocByProductId(@Param("productId") Long productId);
 
     @Query("SELECT new com.github.angel.dto.ProductDTO(p.productId, p.name) FROM Product p")

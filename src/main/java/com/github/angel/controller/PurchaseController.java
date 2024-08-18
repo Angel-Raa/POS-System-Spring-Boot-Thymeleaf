@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +31,7 @@ import com.github.angel.service.PurchaseService;
 import com.github.angel.utils.PageRenderUtils;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 /**
  *
@@ -41,18 +43,18 @@ public class PurchaseController {
     private final PurchaseService service;
     private final ProductService productService;
 
-    
     public PurchaseController(PurchaseService service, ProductService productService) {
         this.service = service;
         this.productService = productService;
     }
 
     @ModelAttribute("paymentMethods")
-    public List<String >paymentMethods(){
+    public List<String> paymentMethods() {
         return List.of("Credit Card", "PayPal", "Bank Transfer");
     }
+
     @ModelAttribute("products")
-    public List<ProductDTO> products(){
+    public List<ProductDTO> products() {
         return productService.getProductsAllName();
     }
 
@@ -94,5 +96,46 @@ public class PurchaseController {
         return "purchase/list-purchase";
     }
 
-  
+
+
+    @GetMapping("/edit/{purchaseId}")
+    public String getEditPurchase(@PathVariable(name  = "purchaseId") @Min(1) Long purchaseId, final Model model) {
+        PurchaseDTO purchase = service.getPurchaseById(purchaseId);
+        System.out.println(purchaseId);
+
+        model.addAttribute("purchase", purchase);
+        return "purchase/edit-purchase";
+    }
+
+    @PostMapping("/edit/{purchaseId}")
+    public String updatePurchase(@Valid final PurchaseDTO purchase,
+            final BindingResult result,
+            final RedirectAttributes attributes,
+            final Model model,
+            @PathVariable(name = "purchaseId") @Min(1) Long  purchaseId) {
+        if (result.hasErrors()) {
+            Map<String, Object> errores = result.getFieldErrors().stream()
+                    .collect(Collectors.toMap(
+                            FieldError::getField,
+                            FieldError::getDefaultMessage));
+            model.addAttribute("errors", errores);
+            model.addAttribute("purchase", purchase);
+            return "purchase/edit-purchase";
+        }
+
+        System.out.println(purchaseId);
+        model.addAttribute("purchase", purchase);
+        attributes.addFlashAttribute("message", "Purchase updated successfully!");
+        service.updatePurchase(purchaseId, purchase);
+        return "redirect:/purchase/list";
+    }
+
+
+    @GetMapping("/delete/{purchaseId}")
+    public String deletePurchase(@PathVariable(name = "purchaseId") @Min(1) Long purchaseId, final Model model, final RedirectAttributes attributes) {
+        service.deletePurchase(purchaseId);
+        attributes.addFlashAttribute("message", "The purchase has been deleted successfully.");
+
+        return "redirect:/purchase/list";
+    }
 }

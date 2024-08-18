@@ -78,7 +78,7 @@ public class Purchase implements Serializable {
     @NotBlank(message = "Payment method cannot be empty")
     private String paymentMethod;
 
-    @Column(name = "purchase_date")
+    @Column(name = "purchase_date", updatable = false)
     @CreationTimestamp
     private LocalDateTime purchaseDate;
 
@@ -104,6 +104,8 @@ public class Purchase implements Serializable {
     }
 
     
+   
+
     public Purchase(Long purchaseId, Long customerId, Long productId,
             @PositiveOrZero(message = "Quantity must be a positive value or zero") @NotNull(message = "Quantity is required") Integer quantity,
             @DecimalMin(value = "0.0", inclusive = false, message = "Price per unit must be greater than zero") @Digits(integer = 6, fraction = 2, message = "Price per unit should be a valid decimal number with up to 6 digits and 2 decimal places") @NotNull(message = "Price per unit is required") BigDecimal pricePerUnit,
@@ -127,6 +129,8 @@ public class Purchase implements Serializable {
         this.customer = customer;
         this.product = product;
     }
+
+
 
 
     public Long getPurchaseId() {

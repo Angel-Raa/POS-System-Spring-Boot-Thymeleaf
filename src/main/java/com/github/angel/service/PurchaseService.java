@@ -18,6 +18,11 @@ public interface PurchaseService {
     Page<PurchaseDTO> getAllPurchases(Pageable pageable);
     PurchaseDTO getPurchaseById(Long id);
     void createPurchase(PurchaseDTO purchaseDTO);
+    void updatePurchase(Long id, PurchaseDTO purchaseDTO);
+    void deletePurchase(Long id);
+
+  
+
     
 
 }
