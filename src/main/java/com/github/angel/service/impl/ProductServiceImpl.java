@@ -104,6 +104,10 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(dto.getPrice());
         return product;
     }
+    @Override
+    public List<ProductDTO> getProductsAllName() {
+        return productRepository.findAllName();
+    }
 
     
 }

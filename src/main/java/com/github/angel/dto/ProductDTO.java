@@ -29,6 +29,12 @@ public class ProductDTO implements Serializable {
         }
 
         public ProductDTO(Long productId,
+                        @NotBlank(message = "Name is required") @Size(max = 40, message = "Name must not exceed 40 characters") String name) {
+                this.productId = productId;
+                this.name = name;
+        }
+
+        public ProductDTO(Long productId,
                         @NotBlank(message = "Name is required") @Size(max = 40, message = "Name must not exceed 40 characters") String name,
                         @Positive(message = "Price must be greater than zero") @NotNull(message = "Price is required") BigDecimal price,
                         @PositiveOrZero(message = "Stock must be zero or positive") @NotNull(message = "Stock is required") Integer stock,

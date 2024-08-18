@@ -12,12 +12,14 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListPagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.github.angel.dto.ProductDTO;
+import com.github.angel.dto.ProductStockDTO;
 import com.github.angel.entity.Product;
 
 /**
@@ -45,4 +47,13 @@ public interface ProductRepository
     @Query(value = "SELECT new com.github.angel.dto.ProductDTO(p.productId, p.name, p.price, p.stock, p.description, p.categoryId) FROM Product p", countQuery = "SELECT COUNT(p.productId) FROM Product p")
     Page<ProductDTO> findAllDtosPage(Pageable pageable);
 
+    @Modifying
+    @Query("UPDATE Product p SET p.stock = :newStock WHERE p.productId = :productId")
+    void updateStock(@Param("productId") Long productId, @Param("newStock") int newStock);
+
+    @Query("SELECT NEW com.github.angel.dto.ProductStockDTO(p.stock, p.price) FROM Product p WHERE p.productId =:productId")
+    Optional<ProductStockDTO> findProductStocByProductId(@Param("productId") Long productId);
+
+    @Query("SELECT new com.github.angel.dto.ProductDTO(p.productId, p.name) FROM Product p")
+    List<ProductDTO> findAllName();
 }
