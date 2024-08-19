@@ -99,7 +99,54 @@ public interface PurchaseRepository
          JOIN Product pr ON p.productId = pr.productId
          JOIN Customer c ON p.customerId = c.customerId
          """)
-   Page<ReportDTO>  findPurchaseReportBy(Pageable pageable);
-   
+   Page<ReportDTO> findPurchaseReportBy(Pageable pageable);
+
+   @Query("""
+         SELECT COALESCE(SUM(p.totalPrice), 0)
+         FROM Purchase p
+         """)
+   Long findTotalSales();
+
+   @Query("""
+         SELECT COALESCE(COUNT(p.purchaseId), 0)
+         FROM Purchase p
+         """)
+   Long findTotalTransactions();
+
+   @Query("""
+         SELECT COALESCE(SUM(p.quantity), 0)
+         FROM Purchase p
+         """)
+   Long findSellingProduct();
+
+   @Query("""
+         SELECT COALESCE(COUNT(DISTINCT p.productId), 0)
+         FROM Purchase p
+         """)
+   Long findSellingCategory();
+
+   @Query("""
+         SELECT NEW com.github.angel.dto.ReportDTO(
+             p.purchaseId,
+             c.firstName,
+             pr.name,
+             p.quantity,
+             p.pricePerUnit,
+             p.totalPrice,
+             p.shippingAddress,
+             p.paymentMethod,
+             p.purchaseDate,
+             p.note
+         )
+         FROM Purchase p
+         JOIN p.product pr
+         JOIN p.customer c
+         WHERE (:productName IS NULL OR pr.name = :productName)
+         AND (:paymentMethod IS NULL OR p.paymentMethod = :paymentMethod)
+         """)
+   Page<ReportDTO> findAllWithFilters(
+         @Param("productName") String productName,
+         @Param("paymentMethod") String paymentMethod,
+         Pageable pageable);
 
 }

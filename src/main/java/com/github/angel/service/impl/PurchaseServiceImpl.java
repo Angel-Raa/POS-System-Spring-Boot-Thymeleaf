@@ -51,6 +51,7 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .orElseThrow(() -> new ResourceNotFoundException("Purchase not found"));
     }
 
+  
     @Transactional
     @Override
     public void createPurchase(PurchaseDTO purchaseDTO) {
@@ -124,6 +125,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         BigDecimal newTotalPrice = productStockDTO.getPrice().multiply(BigDecimal.valueOf(newQuantity));
         BigDecimal newPricePerUnit = productStockDTO.getPrice();
         Purchase purchase = mapToPurchaseDto(purchaseDTO);
+        purchase.setCustomerId(customerId);
         purchase.setTotalPrice(newTotalPrice);
         purchase.setPricePerUnit(newPricePerUnit);
         purchaseRepository.update(purchase);
@@ -171,5 +173,7 @@ public class PurchaseServiceImpl implements PurchaseService {
                     product.getProductId(), availableStock, requestedQuantity));
         }
     }
+
+    
 
 }

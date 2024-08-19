@@ -55,6 +55,7 @@ public class PurchaseController {
         this.customerService = customerService;
     }
 
+   
     @ModelAttribute("customers")
     public List<CustomerDTO> customerDTOs(){
         return customerService.searchByName();
@@ -112,8 +113,6 @@ public class PurchaseController {
     @GetMapping("/edit/{purchaseId}")
     public String getEditPurchase(@PathVariable(name = "purchaseId") @Min(1) Long purchaseId, final Model model) {
         PurchaseDTO purchase = service.getPurchaseById(purchaseId);
-        System.out.println(purchaseId);
-
         model.addAttribute("purchase", purchase);
         return "purchase/edit-purchase";
     }
@@ -134,7 +133,6 @@ public class PurchaseController {
             return "purchase/edit-purchase";
         }
 
-        System.out.println(purchaseId);
         model.addAttribute("purchase", purchase);
         attributes.addFlashAttribute("message", "Purchase updated successfully!");
         service.updatePurchase(purchaseId, purchase);

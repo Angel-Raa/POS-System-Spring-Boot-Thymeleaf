@@ -19,8 +19,15 @@ import com.itextpdf.text.DocumentException;
 public interface ReportService {
 
     Page<ReportDTO> findAll(Pageable pageable);
+    Page<ReportDTO> getAllWithFilters(String productName, String paymentMethod, Pageable pageable );
+
     ReportDTO getReportById(Long reportId);
     byte[] generatePurchaseReport(Long reportId) throws DocumentException;
+    long getTotalSales();
+    long getTotalTransactions();
+    long getSellingProduct();
+    long getSellingCategory();
+   
 
 
 }

@@ -5,8 +5,7 @@
 
 package com.github.angel.service.impl;
 
-import java.io.ByteArrayOutputStream;
-import java.time.format.DateTimeFormatter;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +20,7 @@ import com.github.angel.exception.ReportGenerationException;
 import com.github.angel.exception.ResourceNotFoundException;
 import com.github.angel.repository.PurchaseRepository;
 import com.github.angel.service.ReportService;
-import com.github.angel.utils.PdfGeneratorUtils;
+import com.github.angel.utils.PdfGeneratorSaleUtils;
 import com.itextpdf.text.DocumentException;
 
 
@@ -32,16 +31,20 @@ import com.itextpdf.text.DocumentException;
 @Service
 public class ReportServiceImpl implements ReportService {
     private static final Logger logger = LoggerFactory.getLogger(ReportServiceImpl.class);
-    private  final PdfGeneratorUtils  generatorUtils;
+    private  final PdfGeneratorSaleUtils  generatorUtils;
     private final PurchaseRepository purchaseRepository;
 
     
 
-    public ReportServiceImpl(PdfGeneratorUtils generatorUtils, PurchaseRepository purchaseRepository) {
+    public ReportServiceImpl(PdfGeneratorSaleUtils generatorUtils, PurchaseRepository purchaseRepository) {
         this.generatorUtils = generatorUtils;
         this.purchaseRepository = purchaseRepository;
     }
-
+    @Transactional(readOnly = true)
+    @Override
+    public Page<ReportDTO> getAllWithFilters(String productName, String paymentMethod, Pageable pageable) {
+        return  purchaseRepository.findAllWithFilters(productName, paymentMethod, pageable);
+    }
     @Transactional(readOnly = true)
     @Override
     public Page<ReportDTO> findAll(Pageable pageable) {
@@ -70,6 +73,28 @@ public class ReportServiceImpl implements ReportService {
     }
 
     }
+    @Transactional(readOnly = true)
+    @Override
+    public long getTotalSales() {
+       return purchaseRepository.findTotalSales();
+    }
+    @Transactional(readOnly = true)
+    @Override
+    public long getTotalTransactions() {
+        return purchaseRepository.findTotalTransactions();
+    }
+    @Transactional(readOnly = true)
+    @Override
+    public long getSellingProduct() {
+        return purchaseRepository.findSellingProduct();
+    }
+    @Transactional(readOnly = true)
+    @Override
+    public long getSellingCategory() {
+        return purchaseRepository.findSellingCategory();
+    }
+
+  
 
    
 

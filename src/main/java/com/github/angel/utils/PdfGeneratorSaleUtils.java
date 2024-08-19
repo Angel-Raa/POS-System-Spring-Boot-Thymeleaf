@@ -30,7 +30,7 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
  * @author aguero
  */
 @Component
-public class PdfGeneratorUtils {
+public class PdfGeneratorSaleUtils {
 
     private static final Font TITLE_FONT = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22, BaseColor.BLACK);
     private static final Font SUBTITLE_FONT = FontFactory.getFont(FontFactory.HELVETICA, 14, BaseColor.DARK_GRAY);
