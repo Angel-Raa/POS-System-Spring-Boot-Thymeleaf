@@ -30,6 +30,7 @@ public interface CustomerService {
 
     List<CustomerDTO> searchByName(String theName);
 
+    List<CustomerDTO> searchByName();
     boolean existsByEmail(String email);
 
     CustomerDTO findByEmail(String email);

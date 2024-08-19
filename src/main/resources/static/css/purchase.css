@@ -1,0 +1,31 @@
+/* Estilo para la lista de sugerencias */
+#suggestionList {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    display: none;
+}
+
+/* Estilo para los elementos de la lista */
+.list-group-item {
+    cursor: pointer;
+}
+
+.list-group-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* Estilo para el indicador de carga */
+#loadingSpinner {
+    display: none;
+    font-size: 14px;
+    color: #888;
+}

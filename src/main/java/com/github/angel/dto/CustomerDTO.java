@@ -41,11 +41,17 @@ public class CustomerDTO implements Serializable{
         public CustomerDTO() {
         }
 
+        
+
         public CustomerDTO(Long customerId,
-                        @NotBlank(message = "First name is required") @Size(max = 40, message = "First name must not exceed 40 characters") String firstName) {
+                        @NotBlank(message = "First name is required") @Size(max = 40, message = "First name must not exceed 40 characters") String firstName,
+                        @NotBlank(message = "Last name is required") @Size(max = 40, message = "Last name must not exceed 40 characters") String lastName) {
                 this.customerId = customerId;
                 this.firstName = firstName;
+                this.lastName = lastName;
         }
+
+
 
         public CustomerDTO(Long customerId,
                         @NotBlank(message = "First name is required") @Size(max = 40, message = "First name must not exceed 40 characters") String firstName,

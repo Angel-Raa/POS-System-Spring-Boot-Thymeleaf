@@ -83,6 +83,12 @@ public class PurchaseDTO implements Serializable {
                 this.updateAt = updateAt;
         }
 
+        public PurchaseDTO(Long purchaseId,
+                        @NotBlank(message = "Payment method is required") @Size(max = 50, message = "Payment method must not exceed 50 characters") String paymentMethod) {
+                this.purchaseId = purchaseId;
+                this.paymentMethod = paymentMethod;
+        }
+
         public Long getPurchaseId() {
                 return purchaseId;
         }

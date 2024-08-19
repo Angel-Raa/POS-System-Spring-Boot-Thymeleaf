@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.github.angel.dto.PurchaseDTO;
 import com.github.angel.dto.PurchaseValidationDTO;
+import com.github.angel.dto.ReportDTO;
 import com.github.angel.entity.Purchase;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -44,12 +45,12 @@ public interface PurchaseRepository
    Optional<PurchaseDTO> findByPurchaseIdDto(@Param("purchaseId") Long purchaseId);
 
    @Query(value = """
-         SELECT com.github.angel.dto.PurchaseDTO(
-            p.purchaseId,p.customerId, p.productId, p.quantity, p.pricePerUnit, p.totalPrice, p.shippingAddress, p.paymentMethod, p.purchaseDate, p.updateAt
+         SELECT NEW  com.github.angel.dto.PurchaseDTO(
+            p.purchaseId,p.customerId, p.productId, p.quantity, p.pricePerUnit, p.totalPrice, p.shippingAddress, p.paymentMethod, p.purchaseDate, p.note, p.updateAt
          ) FROM Purchase p
          ORDER BY p.purchaseDate
-         """)
-   List<PurchaseDTO> findByOrderByPurchaseDate();
+         """, countQuery = "SELECT COUNT(p.purchaseId) FROM Purchase p")
+   Page<PurchaseDTO> findByOrderByPurchaseDate(Pageable pageable);
 
    @Query(value = """
              SELECT NEW com.github.angel.dto.PurchaseDTO(
@@ -76,5 +77,29 @@ public interface PurchaseRepository
          WHERE p.purchaseId = :purchaseId
          """)
    Optional<PurchaseDTO> findPurchaseDetailsById(@Param("purchaseId") Long purchaseId);
+
+   @Query("""
+         SELECT NEW com.github.angel.dto.ReportDTO(
+            p.purchaseId, c.firstName, pr.name, p.quantity, p.pricePerUnit, p.totalPrice,
+            p.shippingAddress, p.paymentMethod, p.purchaseDate, p.note
+         )
+         FROM Purchase p
+         JOIN Product pr ON p.productId = pr.productId
+         JOIN Customer c ON p.customerId = c.customerId
+            WHERE p.purchaseId = :purchaseId
+         """)
+   Optional<ReportDTO> findPurchaseReportById(@Param("purchaseId") Long purchaseId);
+
+   @Query("""
+         SELECT NEW com.github.angel.dto.ReportDTO(
+            p.purchaseId, c.firstName, pr.name, p.quantity, p.pricePerUnit, p.totalPrice,
+            p.shippingAddress, p.paymentMethod, p.purchaseDate, p.note
+         )
+         FROM Purchase p
+         JOIN Product pr ON p.productId = pr.productId
+         JOIN Customer c ON p.customerId = c.customerId
+         """)
+   Page<ReportDTO>  findPurchaseReportBy(Pageable pageable);
+   
 
 }

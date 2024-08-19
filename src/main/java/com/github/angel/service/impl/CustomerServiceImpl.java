@@ -52,6 +52,12 @@ public class CustomerServiceImpl implements CustomerService {
                 .orElseThrow(() -> new ResourceNotFoundException("Client not found with that ID " + theId));
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<CustomerDTO> searchByName() {
+        return customerRepository.findByFirstName();
+    }
+
     @Transactional
     @Override
     public void save(CustomerDTO customerDTO) {
@@ -132,11 +138,5 @@ public class CustomerServiceImpl implements CustomerService {
         customerDTO.setFirstName(customer.getFirstName());
         return customerDTO;
     }
-
-
-
-    
-
-   
 
 }

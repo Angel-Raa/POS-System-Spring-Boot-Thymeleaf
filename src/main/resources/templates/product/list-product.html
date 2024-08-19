@@ -46,6 +46,10 @@
                         </tr>
                     </thead>
                     <tbody>
+
+                        <tr th:if="${products.isEmpty()}">
+                            <td colspan="11" class="text-center">No product in process</td>
+                        </tr>
                         <tr th:each="product : ${products}">
                             <td th:text="${product.name}"></td>
                             <td th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 2, 'COMMA')}"></td>

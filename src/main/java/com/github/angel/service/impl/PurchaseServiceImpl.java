@@ -105,18 +105,17 @@ public class PurchaseServiceImpl implements PurchaseService {
         // Obtener la compra existente
         PurchaseDTO existingPurchase = purchaseRepository.findPurchaseDetailsById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Purchase not found"));
+
         ProductStockDTO productStockDTO = productRepository.findProductStocByProductId(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         Integer oldQuantity = existingPurchase.getQuantity();
         Integer newQuantity = purchaseDTO.getQuantity();
         Integer quantityDifference = oldQuantity - newQuantity;
-        System.out.println(quantityDifference);
         // Validar stock solo si la cantidad aumenta
         if (quantityDifference > 0) {
             validateStock(productStockDTO, quantityDifference);
         }
-
         // Update the stock based on the new quantity
         Integer newStock = productStockDTO.getStock() - quantityDifference;
         productRepository.updateStock(productId, newStock);

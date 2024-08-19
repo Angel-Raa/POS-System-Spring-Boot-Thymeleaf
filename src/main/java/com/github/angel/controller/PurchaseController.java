@@ -24,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.github.angel.dto.CustomerDTO;
 import com.github.angel.dto.ProductDTO;
 import com.github.angel.dto.PurchaseDTO;
+import com.github.angel.service.CustomerService;
 import com.github.angel.service.ProductService;
 import com.github.angel.service.PurchaseService;
 import com.github.angel.utils.PageRenderUtils;
@@ -42,10 +44,20 @@ import jakarta.validation.constraints.Min;
 public class PurchaseController {
     private final PurchaseService service;
     private final ProductService productService;
+    private final CustomerService customerService;
 
-    public PurchaseController(PurchaseService service, ProductService productService) {
+    
+
+
+    public PurchaseController(PurchaseService service, ProductService productService, CustomerService customerService) {
         this.service = service;
         this.productService = productService;
+        this.customerService = customerService;
+    }
+
+    @ModelAttribute("customers")
+    public List<CustomerDTO> customerDTOs(){
+        return customerService.searchByName();
     }
 
     @ModelAttribute("paymentMethods")
@@ -69,6 +81,7 @@ public class PurchaseController {
             final BindingResult result,
             final RedirectAttributes attributes,
             final Model model) {
+        System.out.println(purchase);
         if (result.hasErrors()) {
             // Recopila los errores de validación y los agrega al modelo
             Map<String, Object> errores = result.getFieldErrors().stream()
@@ -96,10 +109,8 @@ public class PurchaseController {
         return "purchase/list-purchase";
     }
 
-
-
     @GetMapping("/edit/{purchaseId}")
-    public String getEditPurchase(@PathVariable(name  = "purchaseId") @Min(1) Long purchaseId, final Model model) {
+    public String getEditPurchase(@PathVariable(name = "purchaseId") @Min(1) Long purchaseId, final Model model) {
         PurchaseDTO purchase = service.getPurchaseById(purchaseId);
         System.out.println(purchaseId);
 
@@ -112,7 +123,7 @@ public class PurchaseController {
             final BindingResult result,
             final RedirectAttributes attributes,
             final Model model,
-            @PathVariable(name = "purchaseId") @Min(1) Long  purchaseId) {
+            @PathVariable(name = "purchaseId") @Min(1) Long purchaseId) {
         if (result.hasErrors()) {
             Map<String, Object> errores = result.getFieldErrors().stream()
                     .collect(Collectors.toMap(
@@ -130,9 +141,9 @@ public class PurchaseController {
         return "redirect:/purchase/list";
     }
 
-
     @GetMapping("/delete/{purchaseId}")
-    public String deletePurchase(@PathVariable(name = "purchaseId") @Min(1) Long purchaseId, final Model model, final RedirectAttributes attributes) {
+    public String deletePurchase(@PathVariable(name = "purchaseId") @Min(1) Long purchaseId, final Model model,
+            final RedirectAttributes attributes) {
         service.deletePurchase(purchaseId);
         attributes.addFlashAttribute("message", "The purchase has been deleted successfully.");
 

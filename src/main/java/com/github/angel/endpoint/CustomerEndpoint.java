@@ -8,6 +8,7 @@ package com.github.angel.endpoint;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import com.github.angel.service.CustomerService;
  *
  * @author aguero
  */
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/customers")
 public class CustomerEndpoint {
@@ -30,7 +32,7 @@ public class CustomerEndpoint {
     }
 
     @GetMapping
-    public ResponseEntity<List<CustomerDTO>> searchByName(@RequestParam String query) {
+    public ResponseEntity<List<CustomerDTO>> searchByName(@RequestParam("query") String query) {
         return ResponseEntity.ok(customerService.searchByName(query));
     }
 }
