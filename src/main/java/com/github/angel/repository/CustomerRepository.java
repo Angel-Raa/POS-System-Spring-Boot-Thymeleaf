@@ -15,7 +15,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.github.angel.dto.CustomerDTO;
-import com.github.angel.dto.CustomerPurchaseHistoryDTO;
 import com.github.angel.entity.Customer;
 
 import io.hypersistence.utils.spring.repository.BaseJpaRepository;

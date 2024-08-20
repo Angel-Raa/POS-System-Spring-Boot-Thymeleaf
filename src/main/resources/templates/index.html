@@ -15,7 +15,7 @@
 </head>
 
 <body>
-  <div  class="sb-nav-fixed">
+  <div class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
       <!-- Navbar Brand-->
       <a class="navbar-brand ps-3" th:href="@{/}">POS-System</a>
@@ -61,8 +61,7 @@
                 </div>
                 Dashboard
               </a>
-              <!--Pages -->
-
+              <!-- Pages -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
                 aria-expanded="false" aria-controls="collapsePages">
                 <div class="sb-nav-link-icon">
@@ -90,7 +89,7 @@
                   </div>
                 </nav>
               </div>
-              <!--Page end-->
+              <!-- Page end -->
 
               <!-- Customer -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCustomer"
@@ -168,7 +167,6 @@
             POS
           </div>
         </nav>
-
         <!--Nav end -->
       </div>
       <div id="layoutSidenav_content">
@@ -178,101 +176,42 @@
             <ol class="breadcrumb mb-4">
               <li class="breadcrumb-item active">Dashboard</li>
             </ol>
-            <div class="row">
-              <div class="col-xl-3 col-md-6">
-                <div class="card bg-primary text-white mb-4">
-                  <div class="card-body">Primary Card</div>
-                  <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white">
-                      <i class="fas fa-angle-right"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="card mb-4">
-              <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                DataTable Example
+            <!-- Información del Usuario -->
+            <div class="card mb-4 border-primary">
+              <div class="card-header bg-primary text-white">
+                <i class="fas fa-user-circle me-2"></i> Información del Usuario
               </div>
               <div class="card-body">
-                <!--Table start-->
-                <table id="datatablesSimple">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Position</th>
-                      <th>Office</th>
-                      <th>Age</th>
-                      <th>Start date</th>
-                      <th>Salary</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>Name</th>
-                      <th>Position</th>
-                      <th>Office</th>
-                      <th>Age</th>
-                      <th>Start date</th>
-                      <th>Salary</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                    <tr>
-                      <td>Tiger Nixon</td>
-                      <td>System Architect</td>
-                      <td>Edinburgh</td>
-                      <td>61</td>
-                      <td>2011/04/25</td>
-                      <td>$320,800</td>
-                    </tr>
-
-
-
-                    <tr>
-                      <td>Donna Snider</td>
-                      <td>Customer Support</td>
-                      <td>New York</td>
-                      <td>27</td>
-                      <td>2011/01/25</td>
-                      <td>$112,000</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <!--table end-->
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Nombre:</strong>
+                    <span class="text-muted">[Nombre del Usuario]</span>
+                  </li>
+                 
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Rol:</strong>
+                    <span class="text-muted">[Rol del Usuario]</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Último Inicio de Sesión:</strong>
+                    <span class="text-muted">[Fecha y Hora]</span>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </main>
-        <footer class="py-4 bg-light mt-auto">
-          <div class="container-fluid px-4">
-            <div class="d-flex align-items-center justify-content-between small">
-              <div class="text-muted">Copyright &copy; Your Website 2023</div>
-              <div>
-                <a href="#">Privacy Policy</a>
-                &middot;
-                <a href="#">Terms &amp; Conditions</a>
-              </div>
-            </div>
-          </div>
-        </footer>
       </div>
     </div>
   </div>
-  
-  <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js}"
-    crossorigin="anonymous"></script>
-  <script th:src="@{js/scripts.js}"></script>
-  <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js}"
-    crossorigin="anonymous"></script>
-  <script th:src="@{https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js}"
-    crossorigin="anonymous"></script>
-  <script src="js/datatables-simple-demo.js"></script>
 
-  
 </body>
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js}"
+  crossorigin="anonymous"></script>
+<script th:src="@{js/scripts.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js}" crossorigin="anonymous"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js}"
+  crossorigin="anonymous"></script>
+<script src="js/datatables-simple-demo.js"></script>
 
 </html>
