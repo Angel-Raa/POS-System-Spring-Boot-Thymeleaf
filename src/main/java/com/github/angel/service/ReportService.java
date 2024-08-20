@@ -9,6 +9,7 @@ package com.github.angel.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.github.angel.dto.CustomerPurchaseHistoryDTO;
 import com.github.angel.dto.ReportDTO;
 import com.itextpdf.text.DocumentException;
 
@@ -20,9 +21,10 @@ public interface ReportService {
 
     Page<ReportDTO> findAll(Pageable pageable);
     Page<ReportDTO> getAllWithFilters(String productName, String paymentMethod, Pageable pageable );
-
+    Page<CustomerPurchaseHistoryDTO>getCustomerPurchaseHistory(Long customerId, Pageable pageable);
     ReportDTO getReportById(Long reportId);
     byte[] generatePurchaseReport(Long reportId) throws DocumentException;
+    byte[] generatePurchaseHistoryPdf(Long customerId) throws DocumentException;
     long getTotalSales();
     long getTotalTransactions();
     long getSellingProduct();

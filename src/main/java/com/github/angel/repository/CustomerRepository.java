@@ -15,6 +15,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.github.angel.dto.CustomerDTO;
+import com.github.angel.dto.CustomerPurchaseHistoryDTO;
 import com.github.angel.entity.Customer;
 
 import io.hypersistence.utils.spring.repository.BaseJpaRepository;
@@ -57,5 +58,7 @@ public interface CustomerRepository
 
         @Query(value = "SELECT new com.github.angel.dto.CustomerDTO(c.customerId, c.firstName, c.lastName, c.email, c.tel, c.address) FROM Customer c", countQuery = "SELECT COUNT(c.customerId) FROM Customer c")
         Page<CustomerDTO> findAllDtoPages(Pageable pageable);
+
+        
 
 }

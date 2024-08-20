@@ -21,13 +21,38 @@
 
         <!-- Filtros de Ventas -->
         <div class="card mb-4">
-            <div class="card-header">
+            <div class="card-header bg-primary text-white">
                 <i class="fas fa-filter me-1"></i>
                 Filters
             </div>
             <div class="card-body">
-              
-
+                <!-- Aquí puedes añadir los filtros según los requerimientos -->
+                <form th:action="@{/sales/report}" method="get">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="startDate" class="form-label">Start Date</label>
+                            <input type="date" id="startDate" name="startDate" class="form-control"
+                                   th:value="${startDate}">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="endDate" class="form-label">End Date</label>
+                            <input type="date" id="endDate" name="endDate" class="form-control"
+                                   th:value="${endDate}">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select id="category" name="category" class="form-select">
+                                <option value="">All Categories</option>
+                                <option th:each="category : ${categories}"
+                                        th:value="${category.id}"
+                                        th:text="${category.name}"></option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary">Apply Filters</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -35,37 +60,37 @@
         <div class="row mb-4">
             <!-- Ventas Totales -->
             <div class="col-md-3 mb-3">
-                <div class="card text-center">
+                <div class="card text-center border-primary">
                     <div class="card-body">
-                        <h5>Total Sales</h5>
-                        <h3>$<span id="totalSales" th:text="${TotalSales}"></span></h3>
+                        <h5 class="card-title">Total Sales</h5>
+                        <h3 class="card-text">$<span id="totalSales" th:text="${TotalSales}"></span></h3>
                     </div>
                 </div>
             </div>
             <!-- Número de Transacciones -->
             <div class="col-md-3 mb-3">
-                <div class="card text-center">
+                <div class="card text-center border-success">
                     <div class="card-body">
-                        <h5>Total Transactions</h5>
-                        <h3><span id="totalTransactions" th:text="${TotalTransactions}"></span></h3>
+                        <h5 class="card-title">Total Transactions</h5>
+                        <h3 class="card-text"><span id="totalTransactions" th:text="${TotalTransactions}"></span></h3>
                     </div>
                 </div>
             </div>
             <!-- Ventas por Producto -->
             <div class="col-md-3 mb-3">
-                <div class="card text-center">
+                <div class="card text-center border-warning">
                     <div class="card-body">
-                        <h5>Top Selling Product</h5>
-                        <h3><span id="topProduct" th:text="${MostSellingProduct}"></span></h3>
+                        <h5 class="card-title">Top Selling Product</h5>
+                        <h3 class="card-text"><span id="topProduct" th:text="${MostSellingProduct}"></span></h3>
                     </div>
                 </div>
             </div>
             <!-- Ventas por Categoría -->
             <div class="col-md-3 mb-3">
-                <div class="card text-center">
+                <div class="card text-center border-danger">
                     <div class="card-body">
-                        <h5>Top Category</h5>
-                        <h3><span id="topCategory" th:text="${MostSellingCategory}"></span></h3>
+                        <h5 class="card-title">Top Category</h5>
+                        <h3 class="card-text"><span id="topCategory" th:text="${MostSellingCategory}"></span></h3>
                     </div>
                 </div>
             </div>
@@ -73,14 +98,14 @@
 
         <!-- Detalles de Transacciones de Ventas -->
         <div class="card shadow-sm">
-            <div class="card-header">
+            <div class="card-header bg-primary text-white">
                 <i class="fas fa-table me-1"></i>
                 List of Transactions
             </div>
             <div class="card-body">
                 <!-- Table Start -->
                 <table class="table table-striped table-bordered" id="datatablesSimple">
-                    <thead>
+                    <thead class="table-dark">
                         <tr>
                             <th>#</th>
                             <th>Customer</th>
@@ -105,21 +130,21 @@
                             <td th:text="${transaction.customerName}"></td>
                             <td th:text="${transaction.productName}"></td>
                             <td th:text="${transaction.quantity}"></td>
-                            <td th:text="${transaction.pricePerUnit}"></td>
-                            <td th:text="${transaction.totalPrice}"></td>
+                            <td th:text="${#numbers.formatDecimal(transaction.pricePerUnit, 2, 'POINT', 2, 'COMMA')}"></td>
+                            <td th:text="${#numbers.formatDecimal(transaction.totalPrice, 2, 'POINT', 2, 'COMMA')}"></td>
                             <td th:text="${transaction.paymentMethod}"></td>
                             <td th:text="${transaction.purchaseDate}"></td>
                             <td>
                                 <!-- Botones de acción para editar y eliminar -->
                                 <div class="btn-group" role="group">
                                     <a th:href="@{/purchase/edit/}+${transaction.reportId}"
-                                        class="btn btn-warning btn-sm">
-                                        Edit
+                                        class="btn btn-warning btn-sm me-1">
+                                        <i class="fas fa-edit"></i> Edit
                                     </a>
                                     <a th:href="@{/purchase/delete/}+${transaction.reportId}"
                                         class="btn btn-danger btn-sm"
                                         onclick="return confirm('Are you sure you want to delete this transaction?');">
-                                        Delete
+                                        <i class="fas fa-trash-alt"></i> Delete
                                     </a>
                                 </div>
                             </td>
@@ -127,7 +152,7 @@
                                 <!-- Botón para generar PDF -->
                                 <a th:href="@{/report/transaction/generate-pdf/}+${transaction.reportId}"
                                     class="btn btn-info btn-sm">
-                                    Generate PDF
+                                    <i class="fas fa-file-pdf"></i> Generate PDF
                                 </a>
                             </td>
                         </tr>
@@ -156,7 +181,6 @@
                 <!-- Pagination end -->
             </div>
         </div>
-
     </div>
 </body>
 

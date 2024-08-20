@@ -30,4 +30,6 @@ public interface CategoryRepository extends ListPagingAndSortingRepository<Categ
     @Query(value = "SELECT new com.github.angel.dto.CategoryDTO(c.categoryId, c.name, c.description) FROM Category c",
     countQuery = "SELECT COUNT(c.categoryId) FROM Category c")
     Page<CategoryDTO> findAllDtosPages(Pageable pageable);
+
+    
 }

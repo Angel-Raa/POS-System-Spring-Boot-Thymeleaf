@@ -100,11 +100,7 @@ public class Purchase implements Serializable {
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private Product product;
 
-    public Purchase() {
-    }
-
-    
-   
+    public Purchase() {}
 
     public Purchase(Long purchaseId, Long customerId, Long productId,
             @PositiveOrZero(message = "Quantity must be a positive value or zero") @NotNull(message = "Quantity is required") Integer quantity,
@@ -129,8 +125,6 @@ public class Purchase implements Serializable {
         this.customer = customer;
         this.product = product;
     }
-
-
 
 
     public Long getPurchaseId() {

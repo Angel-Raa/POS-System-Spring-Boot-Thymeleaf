@@ -28,33 +28,32 @@
     <div th:replace="layout/header :: header"></div>
 
     <div class="container-fluid px-4">
-        <h1 class="mt-4">purchases List</h1>
+        <h1 class="mt-4">Purchases List</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item">
                 <a th:href="@{/}">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">List of purchases</li>
+            <li class="breadcrumb-item active">Purchases List</li>
         </ol>
 
         <!-- Mostrar el mensaje de éxito si está presente -->
-        <div th:if="${message != null}" class="alert alert-success">
+        <div th:if="${message != null}" class="alert alert-success shadow-sm">
             <span th:text="${message}"></span>
         </div>
 
         <div class="card shadow-sm">
-            <div class="card-header">
+            <div class="card-header bg-primary text-white">
                 <i class="fas fa-table me-1"></i>
-                List of purchases
+                Purchases List
             </div>
             <div class="card-body">
                 <!-- Table start -->
-                <!-- Tabla de Compras -->
                 <table class="table table-striped table-bordered" id="datatablesSimple">
-                    <thead>
+                    <thead class="table-dark">
                         <tr>
-                            <th>Purchase </th>
-                            <th>Customer</th>
-                            <th>Product</th>
+                            <th>Purchase ID</th>
+                            <th>Customer ID</th>
+                            <th>Product ID</th>
                             <th>Quantity</th>
                             <th>Price per Unit</th>
                             <th>Total Price</th>
@@ -68,7 +67,7 @@
                     <tbody>
                         <!-- Check if the purchases list is empty -->
                         <tr th:if="${purchases.isEmpty()}">
-                            <td colspan="11" class="text-center">No purchases in process</td>
+                            <td colspan="11" class="text-center">No purchases found</td>
                         </tr>
                         <!-- Aquí se deben insertar los datos de las compras desde el backend -->
                         <tr th:each="purchase : ${purchases}">
@@ -86,19 +85,20 @@
                                 <!-- Botones de acción para editar y eliminar -->
                                 <div class="btn-group" role="group">
                                     <a th:href="@{/purchase/edit/}+${purchase.purchaseId}"
-                                        class="btn btn-warning btn-sm">
-                                        Edit
+                                        class="btn btn-warning btn-sm me-1">
+                                        <i class="fas fa-edit"></i> Edit
                                     </a>
                                     <a th:href="@{/purchase/delete/}+${purchase.purchaseId}"
                                         class="btn btn-danger btn-sm"
                                         onclick="return confirm('Are you sure you want to delete this purchase?');">
-                                        Delete
+                                        <i class="fas fa-trash-alt"></i> Delete
                                     </a>
                                 </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                
                 <!-- Pagination start -->
                 <nav th:if="${purchases.totalPages > 1}">
                     <ul class="pagination justify-content-center">
@@ -129,6 +129,9 @@
     <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script>
     <!-- Optional: Include FontAwesome for icons -->
     <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js}"></script>
+    <!-- DataTables JS -->
+    <script th:src="@{https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js}"></script>
     <script>
         $(document).ready(function () {
             $('#datatablesSimple').DataTable({
@@ -139,7 +142,7 @@
             });
         });
     </script>
-   
 </body>
+
 
 </html>
