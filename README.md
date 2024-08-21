@@ -14,13 +14,13 @@ POS es un sistema de punto de venta completo desarrollado para gestionar eficien
 
 ## Tecnologías utilizadas
 
-- **Java:** 
-- **Spring Boot:**
-- **Spring Security:** 
-- **Thymeleaf:** 
-- **PostgreSQL:** 
-- **Docker:** 
-- **iTextPDF:**
+- **Java** 
+- **Spring Boot**
+- **Spring Security** 
+- **Thymeleaf** 
+- **PostgreSQL** 
+- **Docker** 
+- **iTextPDF**
 
 ## Capturas de pantalla
 
@@ -90,6 +90,7 @@ Aquí hay algunos recursos adicionales que podrían ser útiles:
 - [Documentacion de Docker](https://docs.docker.com/)
 - [Documentacion de Thymeleaf](https://www.thymeleaf.org/documentation.html)
 - [Documentacion de Spring Security](https://docs.spring.io/spring-security/reference/index.html)
+- [Documentacion de iTextPDF](https://itextpdf.com/resources/api-documentation)
 - [Documentacion de Git](https://git-scm.com/doc)
 
 
