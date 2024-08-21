@@ -32,6 +32,22 @@ CREATE TABLE purchases (
     note TEXT NOT NULL,
     update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
+
+CREATE TABLE roles (
+    role_id BIGSERIAL PRIMARY KEY,
+    authorities VARCHAR(255) -- Para el Enum Authorities, puede ajustar el tamaño según sus necesidades.
+);
+
+CREATE TABLE users (
+    user_id BIGSERIAL PRIMARY KEY,
+    fk_role_id BIGINT,
+    username VARCHAR(20) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    FOREIGN KEY (fk_role_id) REFERENCES roles(role_id)
+);
+
+
+
 INSERT INTO categories (name, description)
 VALUES (
         'Electrodomésticos',
