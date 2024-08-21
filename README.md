@@ -43,52 +43,6 @@ Aquí puedes ver algunas capturas de pantalla del proyecto para obtener una idea
 *Interfaz del reporte de ventas, mostrando detalles de las transacciones realizadas.*
 
 
-## Esquema de la Base de Datos
-
-Esta sección proporciona una visión general del esquema de la base de datos utilizado en el proyecto. Incluye ejemplos de las tablas y sus relaciones para entender cómo se organiza la información.
-
-### Tablas
-
-#### Tabla `User`
-- **user_id**: Identificador único del usuario (BIGINT, AUTO_INCREMENT, PRIMARY KEY)
-- **email**: Correo electrónico del usuario (VARCHAR(255), UNIQUE, NOT NULL)
-- **username**: Nombre de usuario (VARCHAR(255), UNIQUE, NOT NULL)
-- **password**: Contraseña del usuario (VARCHAR(255), NOT NULL)
-- **role_id**: Identificador del rol del usuario (BIGINT, FOREIGN KEY a `Role(role_id)`)
-
-#### Tabla `Role`
-- **role_id**: Identificador único del rol (BIGINT, AUTO_INCREMENT, PRIMARY KEY)
-- **role_name**: Nombre del rol (VARCHAR(50), UNIQUE, NOT NULL)
-
-#### Tabla `Product`
-- **product_id**: Identificador único del producto (BIGINT, AUTO_INCREMENT, PRIMARY KEY)
-- **name**: Nombre del producto (VARCHAR(255), NOT NULL)
-- **price**: Precio del producto (DECIMAL(10, 2), NOT NULL)
-- **category_id**: Identificador de la categoría del producto (BIGINT, FOREIGN KEY a `Category(category_id)`)
-
-#### Tabla `Category`
-- **category_id**: Identificador único de la categoría (BIGINT, AUTO_INCREMENT, PRIMARY KEY)
-- **category_name**: Nombre de la categoría (VARCHAR(255), UNIQUE, NOT NULL)
-
-#### Tabla `Purchase`
-- **purchase_id**: Identificador único de la compra (BIGINT, AUTO_INCREMENT, PRIMARY KEY)
-- **user_id**: Identificador del usuario que realizó la compra (BIGINT, FOREIGN KEY a `User(user_id)`)
-- **purchase_date**: Fecha de la compra (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
-
-#### Tabla `PurchaseDetail`
-- **detail_id**: Identificador único del detalle de compra (BIGINT, AUTO_INCREMENT, PRIMARY KEY)
-- **purchase_id**: Identificador de la compra (BIGINT, FOREIGN KEY a `Purchase(purchase_id)`)
-- **product_id**: Identificador del producto (BIGINT, FOREIGN KEY a `Product(product_id)`)
-- **quantity**: Cantidad del producto (INT, NOT NULL)
-- **price**: Precio del producto (DECIMAL(10, 2), NOT NULL)
-
-### Relaciones entre Tablas
-
-- **User** tiene una relación de muchos a uno con **Role**.
-- **Product** tiene una relación de muchos a uno con **Category**.
-- **Purchase** tiene una relación de muchos a uno con **User**.
-- **PurchaseDetail** tiene una relación de muchos a uno con **Purchase** y **Product**.
-
 ### Diagramas de Relación
 
 Puedes incluir un diagrama ER (Entidad-Relación) para visualizar las relaciones entre las tablas. Aquí hay un enlace a un diagrama de ejemplo:
@@ -150,3 +104,5 @@ Aquí hay algunos recursos adicionales que podrían ser útiles:
 ## Licencia
 
 Este proyecto está licenciado bajo la Licencia MIT - consulta el archivo [LICENSE](LICENSE) para más detalles.
+
+
