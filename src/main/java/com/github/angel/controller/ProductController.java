@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -48,6 +49,7 @@ public class ProductController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('WRITE')")
     public String getCreateProduct(final Model model) {
 
         model.addAttribute("product", new ProductDTO());
@@ -55,6 +57,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('WRITE')")
     public String postCreateProduct(@Valid ProductDTO product, final BindingResult result,
             final RedirectAttributes attributes, final Model model) {
         if (result.hasErrors()) {
@@ -74,6 +77,7 @@ public class ProductController {
     }
 
     @GetMapping("/list")
+    @PreAuthorize("hasAuthority('READ')")
     public String getAllProduct(final Model model,
             @RequestParam(name = "pages", defaultValue = "0") int pages) {
 
@@ -86,6 +90,7 @@ public class ProductController {
     }
 
     @GetMapping("/edit/{productId}")
+    @PreAuthorize("hasAuthority('UPDATE')")
     public String updateProduct(@PathVariable Long productId, final Model model) {
         ProductDTO product = service.getProductById(productId);
         model.addAttribute("product", product);
@@ -93,6 +98,7 @@ public class ProductController {
     }
 
     @PostMapping("/edit/{productId}")
+    @PreAuthorize("hasAuthority('UPDATE')")
     public String postUpdateProduct(@Valid ProductDTO product, final BindingResult result,
             @PathVariable(name = "productId") @Min(1) Long productId, final RedirectAttributes attributes,
             final Model model) {
@@ -115,6 +121,7 @@ public class ProductController {
     }
 
     @GetMapping("/delete/{productId}")
+    @PreAuthorize("hasAuthority('DELETE')")
     public String deleteProduct(@PathVariable Long productId, final RedirectAttributes attributes) {
         service.deleteProduct(productId);
         attributes.addFlashAttribute("message", "The product has been deleted successfully.");
@@ -122,6 +129,7 @@ public class ProductController {
     }
 
     @ModelAttribute("categories")
+    
     public List<CategoryDTO> getCategories() {
         return categoryService.getAllCategoriesName();
     }

@@ -195,12 +195,6 @@ public class PdfGeneratorCustomerUtils {
         table.addCell(cell);
     }
 
-    private void addCell(PdfPTable table, String content, BaseColor bgColor) {
-        PdfPCell cell = new PdfPCell(new Phrase(content, CONTENT_FONT));
-        cell.setBackgroundColor(bgColor);
-        cell.setPadding(5);
-        table.addCell(cell);
-    }
 
     private void addSummary(Document document, List<CustomerPurchaseHistoryDTO> purchaseHistory)
             throws DocumentException {

@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -46,18 +47,14 @@ public class PurchaseController {
     private final ProductService productService;
     private final CustomerService customerService;
 
-    
-
-
     public PurchaseController(PurchaseService service, ProductService productService, CustomerService customerService) {
         this.service = service;
         this.productService = productService;
         this.customerService = customerService;
     }
 
-   
     @ModelAttribute("customers")
-    public List<CustomerDTO> customerDTOs(){
+    public List<CustomerDTO> customerDTOs() {
         return customerService.searchByName();
     }
 
@@ -72,12 +69,14 @@ public class PurchaseController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('WRITE')")
     public String getSave(final Model model) {
         model.addAttribute("purchase", new PurchaseDTO());
         return "purchase/add-purchase";
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('WRITE')")
     public String createPurchase(@Valid final PurchaseDTO purchase,
             final BindingResult result,
             final RedirectAttributes attributes,
@@ -101,6 +100,7 @@ public class PurchaseController {
     }
 
     @GetMapping("/list")
+    @PreAuthorize("hasAuthority('READ')")
     public String getListPurchase(@RequestParam(name = "pages", defaultValue = "0") int pages, final Model model) {
         Pageable pageable = PageRequest.of(pages, 5);
         Page<PurchaseDTO> purchases = service.getAllPurchases(pageable);
@@ -111,6 +111,7 @@ public class PurchaseController {
     }
 
     @GetMapping("/edit/{purchaseId}")
+    @PreAuthorize("hasAuthority('UPDATE')")
     public String getEditPurchase(@PathVariable(name = "purchaseId") @Min(1) Long purchaseId, final Model model) {
         PurchaseDTO purchase = service.getPurchaseById(purchaseId);
         model.addAttribute("purchase", purchase);
@@ -118,6 +119,7 @@ public class PurchaseController {
     }
 
     @PostMapping("/edit/{purchaseId}")
+    @PreAuthorize("hasAuthority('UPDATE')")
     public String updatePurchase(@Valid final PurchaseDTO purchase,
             final BindingResult result,
             final RedirectAttributes attributes,
@@ -140,6 +142,7 @@ public class PurchaseController {
     }
 
     @GetMapping("/delete/{purchaseId}")
+    @PreAuthorize("hasAuthority('DELETE')")
     public String deletePurchase(@PathVariable(name = "purchaseId") @Min(1) Long purchaseId, final Model model,
             final RedirectAttributes attributes) {
         service.deletePurchase(purchaseId);

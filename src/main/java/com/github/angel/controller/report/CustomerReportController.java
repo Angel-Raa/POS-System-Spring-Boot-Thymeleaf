@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,8 @@ import jakarta.validation.constraints.Min;
  *
  * @author aguero
  */
+@PreAuthorize("hasAuthority('READ')")
+
 @Controller
 @RequestMapping("/report-customer")
 public class CustomerReportController {
@@ -39,7 +42,6 @@ public class CustomerReportController {
     }
 
     @GetMapping("/details/{customerId}")
-    // @PreAuthorize("hasAuthority('ADMIN')")
     public String getCustomerReport(final Model model, @PathVariable("customerId") @Min(1) Long customerId,
             @RequestParam(name = "pages", defaultValue = "0") int pages) {
         Pageable pageable = PageRequest.of(pages, 5);

@@ -5,11 +5,50 @@
 
 package com.github.angel.dto;
 
+import java.io.Serial;
+import java.io.Serializable;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 /**
  *
  * @author aguero
  */
-public class Login {
+public class Login implements Serializable {
+    @Serial
+    private static final Long serialVersionUID = -182162512861162517L;
+    @NotBlank(message = "Username is required")
+    @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
+    private String username;
+    @NotBlank(message = "Password is required")
+    @Size(min = 5, message = "Password must be at least 5 characters")
+    private String password;
+    public Login(
+            @NotBlank(message = "Username is required") @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters") String username,
+            @NotBlank(message = "Password is required") @Size(min = 5, message = "Password must be at least 5 characters") String password) {
+        this.username = username;
+        this.password = password;
+    }
+    public Login() {
+    }
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    @Override
+    public String toString() {
+        return "Login [username=" + username + "]";
+    }
+    
     
 
 }

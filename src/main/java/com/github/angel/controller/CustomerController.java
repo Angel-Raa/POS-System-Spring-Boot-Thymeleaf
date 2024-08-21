@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,7 +30,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.validation.FieldError;
 import java.util.stream.Collectors;
 
-
 /**
  *
  * @author aguero
@@ -38,17 +38,20 @@ import java.util.stream.Collectors;
 @RequestMapping("/customer")
 public class CustomerController {
     private final CustomerService customerService;
+
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('WRITE')")
     public String getCustomer(final Model model) {
         model.addAttribute("customer", new CustomerDTO());
         return "customer/add-customer";
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('WRITE')")
     public String createCustomer(@Valid final CustomerDTO customer, final BindingResult result, final Model model,
             final RedirectAttributes attributes) {
         if (result.hasErrors()) {
@@ -70,16 +73,18 @@ public class CustomerController {
     }
 
     @GetMapping("/list")
-    public String listCustomers(@RequestParam(name = "pages", defaultValue  = "0") int pages, final Model model) {
+    @PreAuthorize("hasAuthority('READ')")
+    public String listCustomers(@RequestParam(name = "pages", defaultValue = "0") int pages, final Model model) {
         PageRequest pageRequest = PageRequest.of(pages, 5);
         Page<CustomerDTO> customers = customerService.findAllDtosPages(pageRequest);
-        PageRenderUtils<CustomerDTO> pageableUtils =  new PageRenderUtils<>("/customer/list", customers);
+        PageRenderUtils<CustomerDTO> pageableUtils = new PageRenderUtils<>("/customer/list", customers);
         model.addAttribute("pageRenderUtils", pageableUtils);
         model.addAttribute("customers", customers);
         return "customer/list-customer";
     }
 
     @GetMapping("/edit/{customerId}")
+    @PreAuthorize("hasAuthority('UPDATE')")
     public String updateCustomer(@PathVariable @Min(1) Long customerId, final Model model) {
         CustomerDTO customerDTO = customerService.findById(customerId);
         model.addAttribute("customer", customerDTO);
@@ -87,6 +92,7 @@ public class CustomerController {
     }
 
     @PostMapping("/edit/{customerId}")
+    @PreAuthorize("hasAuthority('UPDATE')")
     public String update(
             @Valid CustomerDTO customerDTO, final BindingResult result,
             final Model model, final RedirectAttributes attributes, @PathVariable @Min(1) Long customerId) {
@@ -108,11 +114,12 @@ public class CustomerController {
     }
 
     @GetMapping("/delete/{customerId}")
-    public String deleteCustomer(@PathVariable(name = "customerId") @Min(1) Long customerId, final RedirectAttributes attributes) {
+    @PreAuthorize("hasAuthority('DELETE')")
+    public String deleteCustomer(@PathVariable(name = "customerId") @Min(1) Long customerId,
+            final RedirectAttributes attributes) {
         customerService.delete(customerId);
         attributes.addFlashAttribute("message", "The customer has been deleted successfully");
         return "redirect:/customer/list";
     }
-
 
 }

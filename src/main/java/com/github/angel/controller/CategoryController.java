@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,12 +46,14 @@ public class CategoryController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('WRITE')")
     public String getCategory(final Model model) {
         model.addAttribute("category", new Category());
         return "category/add-category";
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('WRITE')")
     public String createCategory(@Valid final CategoryDTO category, final BindingResult result, final Model model,
             final RedirectAttributes attributes) {
         if (result.hasErrors()) {
@@ -74,6 +77,7 @@ public class CategoryController {
     }
 
     @GetMapping("/list")
+    @PreAuthorize("hasAuthority('READ')")
     public String getListCategory(@RequestParam(name = "pages", defaultValue = "0") int pages, final Model model) {
         Pageable pageRequest = PageRequest.of(pages, 5);
         Page<CategoryDTO> categories = service.getAllCategories(pageRequest);
@@ -113,6 +117,7 @@ public class CategoryController {
     }
 
     @GetMapping("/delete/{categoryId}")
+    @PreAuthorize("hasAuthority('DELETE')")
     public String deleteCategory(@PathVariable @Min(1) Long categoryId, final RedirectAttributes attributes) {
         service.deleteCategoryById(categoryId);
         attributes.addFlashAttribute("message", "The category has been deleted successfully");
