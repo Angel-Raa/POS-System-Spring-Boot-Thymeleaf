@@ -7,11 +7,15 @@ package com.github.angel.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -22,17 +26,23 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 @EnableWebSecurity
 public class HttpSecurityConfiguration {
-    private final AuthenticationProvider authenticationProvider;
+    private final PasswordEncoder passwordEncoder;
+    private final UserDetailsService userDetailsService;
 
-    public HttpSecurityConfiguration(AuthenticationProvider authenticationProvider) {
-        this.authenticationProvider = authenticationProvider;
+    public HttpSecurityConfiguration(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
+        this.passwordEncoder = passwordEncoder;
+        this.userDetailsService = userDetailsService;
+    }
 
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .authenticationProvider(authenticationProvider)
+                .authenticationProvider(daoAuthenticationProvider())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/auth/**").permitAll();
                     auth.anyRequest().authenticated();
@@ -41,10 +51,23 @@ public class HttpSecurityConfiguration {
                     form.loginPage("/auth/login")
                             .defaultSuccessUrl("/", true)
                             .permitAll();
+
                 })
-                .logout(
-                        LogoutConfigurer::permitAll)
+                .logout((logout) -> {
+                    logout.logoutUrl("/auth/logut")
+                            .logoutSuccessUrl("/auth/login")
+                            .invalidateHttpSession(true)
+                            .deleteCookies("JSESSIONID");
+                })
                 .build();
+    }
+
+    @Bean
+    AuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder);
+        return authProvider;
     }
 
 }

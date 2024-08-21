@@ -5,7 +5,6 @@
 
 package com.github.angel.service.impl;
 
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -34,8 +33,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder encoder;
     private final AuthenticationManager authenticationManager;
     private final RoleRepository roleRepository;
-
-   
 
     public AuthenticationServiceImpl(UserRepository repository, PasswordEncoder encoder,
             AuthenticationManager authenticationManager, RoleRepository roleRepository) {
@@ -71,7 +68,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } else {
             User user = new User();
             Role role = new Role();
-            role.setAuthorities(Authorities.ADMINISTRATOR);
+            role.setAuthorities(Authorities.ASSOCIATE);
             roleRepository.persist(role);
             user.setPassword(encoder.encode(password));
             user.setRoleId(role.getRoleId());

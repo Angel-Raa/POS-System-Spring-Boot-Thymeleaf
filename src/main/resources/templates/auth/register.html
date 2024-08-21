@@ -30,14 +30,13 @@
                                         <div class="row mb-3">
                                             <div class="col-md-12">
                                                 <div class="form-floating mb-3">
-                                                    <input
-                                                     th:field="*{username}"
-                                                    class="form-control" id="inputUsername" type="text"
-                                                        placeholder="Enter your username" aria-label="Username"
-                                                        required />
+                                                    <input th:field="*{username}" class="form-control"
+                                                        id="inputUsername" type="text" placeholder="Enter your username"
+                                                        aria-label="Username" required />
                                                     <label for="inputUsername">Username</label>
                                                     <div class="text-danger" id="usernameError" style="display:none;">
                                                         Please enter a valid username.</div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -45,9 +44,8 @@
                                         <div class="row mb-3">
                                             <div class="col-md-12">
                                                 <div class="form-floating mb-3">
-                                                    <input 
-                                                    th:field="*{password}"
-                                                    class="form-control" id="inputPassword" type="password"
+                                                    <input th:field="*{password}" class="form-control"
+                                                        id="inputPassword" type="password"
                                                         placeholder="Create a password" aria-label="Password"
                                                         required />
                                                     <label for="inputPassword">Password</label>
@@ -57,7 +55,7 @@
                                             </div>
                                         </div>
 
-                                      
+
 
                                         <div class="mt-4 mb-0">
                                             <div class="d-grid">
@@ -68,7 +66,8 @@
                                     </form>
                                 </div>
                                 <div class="card-footer text-center py-3">
-                                    <div class="small"><a th:href="@{/auth/login}">Have an account? Go to login</a></div>
+                                    <div class="small"><a th:href="@{/auth/login}">Have an account? Go to login</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

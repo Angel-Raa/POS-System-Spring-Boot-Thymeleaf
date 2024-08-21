@@ -15,6 +15,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.github.angel.dto.Login;
@@ -38,13 +39,24 @@ public class AuthenticationController {
     }
 
     @GetMapping("/login")
-    public String login(final Model model) {
+    public String login(final Model model, @RequestParam(name = "error", required = false) String error,
+            @RequestParam(name = "logout", required = false) String logout, final RedirectAttributes attributes) {
+
+        if (error != null) {
+            model.addAttribute("message", "Los datos ingresados no son correctos, por favor vuelva a intentarlo.");
+            model.addAttribute("messageType", "error");
+        }
+        if (logout != null) {
+            model.addAttribute("message", "Ha cerrado sesión exitosamente.");
+            model.addAttribute("messageType", "success");
+        }
         model.addAttribute("login", new Login());
         return "auth/login";
     }
 
     @PostMapping("/login")
-    public String login(@Valid Login login, final BindingResult result, final Model model, final RedirectAttributes attributes){
+    public String login(@Valid Login login, final BindingResult result, final Model model,
+            final RedirectAttributes attributes) {
         if (result.hasErrors()) {
             // Recopila los errores de validación y los agrega al modelo
             Map<String, Object> errores = result.getFieldErrors().stream()
@@ -57,8 +69,9 @@ public class AuthenticationController {
         }
         service.login(login);
         model.addAttribute("login", login);
+        attributes.addAttribute("message", "user authenticated successfully");
         return "redirect:/";
-        
+
     }
 
     @GetMapping("/register")
