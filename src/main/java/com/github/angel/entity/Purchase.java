@@ -46,9 +46,9 @@ public class Purchase implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "purchase_id")
     private Long purchaseId;
-    @Column(name = "customer_id", nullable = false, insertable = true, updatable = true)
+    @Column(name = "fk_customer_id", nullable = false, insertable = true, updatable = true)
     private Long customerId;
-    @Column(name = "product_id", nullable = false, insertable = true, updatable = true)
+    @Column(name = "fk_product_id", nullable = false, insertable = true, updatable = true)
     private Long productId;
 
     @Column(name = "quantity", nullable = false)
@@ -78,7 +78,7 @@ public class Purchase implements Serializable {
     @NotBlank(message = "Payment method cannot be empty")
     private String paymentMethod;
 
-    @Column(name = "purchase_date", updatable = false)
+    @Column(name = "purchase_date", updatable = false, nullable = false)
     @CreationTimestamp
     private LocalDateTime purchaseDate;
 
@@ -90,17 +90,19 @@ public class Purchase implements Serializable {
     private String note;
 
     @UpdateTimestamp
-    @Column(name = "update_at", nullable = false)
+    @Column(name = "update_at")
     private LocalDateTime updateAt;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, targetEntity = Customer.class)
-    @JoinColumn(name = "customer_id", insertable = false, updatable = false)
+    @JoinColumn(name = "fk_customer_id", insertable = false, updatable = false, referencedColumnName = "customer_id")
     private Customer customer;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, targetEntity = Product.class)
-    @JoinColumn(name = "product_id", insertable = false, updatable = false)
+    @JoinColumn(name = "fk_product_id", insertable = false, updatable = false, referencedColumnName = "product_id")
     private Product product;
 
     public Purchase() {}
+
+ 
 
     public Purchase(Long purchaseId, Long customerId, Long productId,
             @PositiveOrZero(message = "Quantity must be a positive value or zero") @NotNull(message = "Quantity is required") Integer quantity,
@@ -125,6 +127,7 @@ public class Purchase implements Serializable {
         this.customer = customer;
         this.product = product;
     }
+
 
 
     public Long getPurchaseId() {

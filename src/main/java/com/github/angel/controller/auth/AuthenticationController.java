@@ -99,4 +99,8 @@ public class AuthenticationController {
         return "redirect:/auth/login";
     }
 
+    @GetMapping("/logout")
+    public String logout(final Model model) {
+        return "redirect:/auth/login?logout=true";
+    }
 }

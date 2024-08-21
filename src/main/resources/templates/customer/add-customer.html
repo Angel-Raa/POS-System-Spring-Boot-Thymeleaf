@@ -51,6 +51,17 @@
                                         th:text="${errors['lastName']}"></div>
                                 </div>
 
+                                 <!-- Email Field -->
+                                 <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input th:field="*{email}" type="email" class="form-control" id="email"
+                                        th:classappend="${errors != null && errors.containsKey('email')} ? 'is-invalid'"
+                                        placeholder="Enter email" />
+                                    <div class="invalid-feedback"
+                                        th:if="${errors != null && errors.containsKey('email')}"
+                                        th:text="${errors['email']}"></div>
+                                </div>
+
                                 <!-- Phone Number Field -->
                                 <div class="mb-3">
                                     <label for="tel" class="form-label">Phone Number</label>
@@ -61,16 +72,7 @@
                                         th:text="${errors['tel']}"></div>
                                 </div>
 
-                                <!-- Email Field -->
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input th:field="*{email}" type="email" class="form-control" id="email"
-                                        th:classappend="${errors != null && errors.containsKey('email')} ? 'is-invalid'"
-                                        placeholder="Enter email" />
-                                    <div class="invalid-feedback"
-                                        th:if="${errors != null && errors.containsKey('email')}"
-                                        th:text="${errors['email']}"></div>
-                                </div>
+                               
 
                                 <!-- Address Field -->
                                 <div class="mb-3">

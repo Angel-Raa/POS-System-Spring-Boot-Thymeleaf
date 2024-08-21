@@ -44,7 +44,7 @@
             <li>
               <hr class="dropdown-divider" />
             </li>
-            <li><a class="dropdown-item" href="#!">Logout</a></li>
+            <li><a class="dropdown-item" th:href="@{/auth/logout}">Logout</a></li>
           </ul>
         </li>
       </ul>
@@ -103,7 +103,7 @@
               <div class="collapse" id="collapseCustomer" aria-labelledby="headingCustomer"
                 data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
-                  <a class="nav-link" th:href="@{/customer}">Add Customer</a>
+                  <a class="nav-link" th:href="@{/customer}" sec:authorize="hasAuthority('WRITE')">Add Customer</a>
                   <a class="nav-link" th:href="@{/customer/list}">List Customers</a>
                 </nav>
               </div>
@@ -120,7 +120,7 @@
               <div class="collapse" id="collapseProduct" aria-labelledby="headingProduct"
                 data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
-                  <a class="nav-link" th:href="@{/product}">Add Product</a>
+                  <a class="nav-link" th:href="@{/product}" sec:authorize="hasAuthority('WRITE')">Add Product</a>
                   <a class="nav-link" th:href="@{/product/list}">List Products</a>
                 </nav>
               </div>
@@ -139,7 +139,7 @@
               <div class="collapse" id="collapsePurchaser" aria-labelledby="headingPurchaser"
                 data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
-                  <a class="nav-link" th:href="@{/purchase}">Add Purchaser</a>
+                  <a class="nav-link" th:href="@{/purchase}" sec:authorize="hasAuthority('WRITE')">Add Purchaser</a>
                   <a class="nav-link" th:href="@{/purchase/list}">List Purchasers</a>
                 </nav>
               </div>
@@ -156,14 +156,14 @@
               <div class="collapse" id="collapseCategory" aria-labelledby="headingCategory"
                 data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
-                  <a class="nav-link" th:href="@{/category}">Add Category</a>
+                  <a class="nav-link" th:href="@{/category}" sec:authorize="hasAuthority('WRITE')">Add Category</a>
                   <a class="nav-link" th:href="@{/category/list}">List Categories</a>
                 </nav>
               </div>
             </div>
           </div>
           <div class="sb-sidenav-footer">
-            <div class="small">Logged in as:</div>
+            <div class="small">Logged in as: <span sec:authentication="name"></span></div>
             POS
           </div>
         </nav>
@@ -182,7 +182,7 @@
               <span th:text="${message}"></span>
             </div>
             <!-- Información del Usuario -->
-            <div class="card mb-4 border-primary">
+            <div class="card mb-4 border-primary" sec:authorize="isAuthenticated()">
               <div class="card-header bg-primary text-white">
                 <i class="fas fa-user-circle me-2"></i> Información del Usuario
               </div>
@@ -190,16 +190,12 @@
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item d-flex justify-content-between align-items-center">
                     <strong>Nombre:</strong>
-                    <span class="text-muted">[Nombre del Usuario]</span>
+                    <span class="text-muted" sec:authentication="name"></span>
                   </li>
 
                   <li class="list-group-item d-flex justify-content-between align-items-center">
                     <strong>Rol:</strong>
-                    <span class="text-muted">[Rol del Usuario]</span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <strong>Último Inicio de Sesión:</strong>
-                    <span class="text-muted">[Fecha y Hora]</span>
+                    <span class="text-muted" sec:authentication="principal.authorities"></span>
                   </li>
                 </ul>
               </div>

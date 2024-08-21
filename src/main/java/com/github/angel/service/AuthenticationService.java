@@ -8,12 +8,12 @@ package com.github.angel.service;
 import com.github.angel.dto.Login;
 import com.github.angel.dto.Register;
 
+
 /**
  *
  * @author aguero
  */
 public interface AuthenticationService {
-    void logout();
     void login(Login login);
     void register(Register register);
     

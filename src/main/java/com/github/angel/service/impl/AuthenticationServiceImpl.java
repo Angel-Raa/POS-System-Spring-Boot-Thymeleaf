@@ -40,12 +40,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.encoder = encoder;
         this.authenticationManager = authenticationManager;
         this.roleRepository = roleRepository;
-    }
 
-    @Override
-    public void logout() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'logout'");
     }
 
     @Override

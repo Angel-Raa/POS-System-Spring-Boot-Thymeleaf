@@ -5,8 +5,6 @@
 
 package com.github.angel.repository;
 
-import java.util.List;
-
 import org.springframework.data.repository.ListPagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

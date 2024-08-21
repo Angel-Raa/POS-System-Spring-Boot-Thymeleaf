@@ -40,11 +40,12 @@ public class HttpSecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authenticationProvider(daoAuthenticationProvider())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/auth/**").permitAll();
+                    auth.requestMatchers("/auth/**", "/css/**", "/js/**", "/img/**", "/lib/**", "/favicon.ico")
+                            .permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(form -> {
@@ -54,9 +55,11 @@ public class HttpSecurityConfiguration {
 
                 })
                 .logout((logout) -> {
-                    logout.logoutUrl("/auth/logut")
+                    logout.logoutUrl("/auth/logout")
+                            .permitAll()
                             .logoutSuccessUrl("/auth/login")
                             .invalidateHttpSession(true)
+                            .clearAuthentication(true)
                             .deleteCookies("JSESSIONID");
                 })
                 .build();
