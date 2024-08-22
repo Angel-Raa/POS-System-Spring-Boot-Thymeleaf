@@ -1,5 +1,7 @@
 # POS System
 
+Si encuentras útil este repositorio, ¡por favor ayúdanos marcándolo con una ⭐! 😊
+
 POS es un sistema de punto de venta completo desarrollado para gestionar eficientemente las operaciones de ventas en un entorno comercial. Este proyecto está diseñado para proporcionar una solución integral para la administración de ventas, productos, categorías, clientes y compras.
 
 ## Funcionalidades principales
@@ -52,8 +54,8 @@ Puedes incluir un diagrama ER (Entidad-Relación) para visualizar las relaciones
 
 ## Requisitos previos
 
-- **Java 21** o superior.
-- **Maven 3.6** o superior.
+- **Java 21**
+- **Maven** 
 - **Docker** (opcional, si deseas ejecutar la aplicación en un contenedor).
 - **PostgreSQL**.
 
