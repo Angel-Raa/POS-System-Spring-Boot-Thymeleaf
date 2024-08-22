@@ -1,5 +1,7 @@
 # POS System
 
+Si encuentras útil este repositorio, ¡por favor ayúdanos marcándolo con una ⭐! 😊
+
 POS es un sistema de punto de venta completo desarrollado para gestionar eficientemente las operaciones de ventas en un entorno comercial. Este proyecto está diseñado para proporcionar una solución integral para la administración de ventas, productos, categorías, clientes y compras.
 
 ## Funcionalidades principales
@@ -52,8 +54,8 @@ Puedes incluir un diagrama ER (Entidad-Relación) para visualizar las relaciones
 
 ## Requisitos previos
 
-- **Java 21** o superior.
-- **Maven 3.6** o superior.
+- **Java 21**
+- **Maven** 
 - **Docker** (opcional, si deseas ejecutar la aplicación en un contenedor).
 - **PostgreSQL**.
 
@@ -61,8 +63,8 @@ Puedes incluir un diagrama ER (Entidad-Relación) para visualizar las relaciones
 
 1. Clona el repositorio:
     ```bash
-    git clone https://github.com/Angel-Raa/POS-Spring-Boot.git
-    cd POS-System
+    git clone https://github.com/Angel-Raa/POS-System-Spring-Boot-Thymeleaf.git
+    cd POS-System-Spring-Boot-Thymeleaf
     ```
 
 2. Configura la base de datos PostgreSQL en `application.yml` o en las variables de entorno.
@@ -79,8 +81,7 @@ Puedes incluir un diagrama ER (Entidad-Relación) para visualizar las relaciones
 
 5. (Opcional) Ejecuta en Docker:
     ```bash
-    docker build -t pos-system .
-    docker run -p 9090:9090 pos-system
+    docker-compose up --build .
     ```
 
 ## Contribuciones
