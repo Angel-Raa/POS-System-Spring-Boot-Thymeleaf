@@ -63,8 +63,8 @@ Puedes incluir un diagrama ER (Entidad-Relación) para visualizar las relaciones
 
 1. Clona el repositorio:
     ```bash
-    git clone https://github.com/Angel-Raa/POS-Spring-Boot.git
-    cd POS-System
+    git clone https://github.com/Angel-Raa/POS-System-Spring-Boot-Thymeleaf.git
+    cd POS-System-Spring-Boot-Thymeleaf
     ```
 
 2. Configura la base de datos PostgreSQL en `application.yml` o en las variables de entorno.
@@ -81,8 +81,7 @@ Puedes incluir un diagrama ER (Entidad-Relación) para visualizar las relaciones
 
 5. (Opcional) Ejecuta en Docker:
     ```bash
-    docker build -t pos-system .
-    docker run -p 9090:9090 pos-system
+    docker-compose up --build .
     ```
 
 ## Contribuciones
