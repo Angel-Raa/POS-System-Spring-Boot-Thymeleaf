@@ -47,8 +47,6 @@ Aquí puedes ver algunas capturas de pantalla del proyecto para obtener una idea
 
 ### Diagramas de Relación
 
-Puedes incluir un diagrama ER (Entidad-Relación) para visualizar las relaciones entre las tablas. Aquí hay un enlace a un diagrama de ejemplo:
-
 ![Diagrama ER](https://github.com/Angel-Raa/POS-Spring-Boot-Thymeleaf/blob/main/src/main/resources/static/img/base-de-dato.png)
 
 
